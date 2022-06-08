@@ -1,6 +1,7 @@
-import 'package:app04/screens/split/split_screen.dart';
+import 'package:app04/screens/splash/splash_screen.dart';
 import 'package:app04/utilities/consts.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 
 void main() => runApp(const MyApp());
 
@@ -18,7 +19,8 @@ class _MyAppState extends State<MyApp> {
       theme: darkThem,
       debugShowCheckedModeBanner: false,
       routes: routes,
-      home: SplitScreen(),
+      builder: EasyLoading.init(),
+      home: const SplashScreen(),
     );
   }
 }

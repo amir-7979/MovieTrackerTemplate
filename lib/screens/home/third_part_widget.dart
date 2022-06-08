@@ -2,6 +2,8 @@ import 'package:app04/screens/helper_widgets/title_button_widget.dart';
 import 'package:app04/utilities/http_helper.dart';
 import 'package:flutter/material.dart';
 import '../../models/trailer_model.dart';
+import '../../utilities/consts.dart';
+import '../helper_widgets/horizontal_shimmer.dart';
 import '../helper_widgets/trailer_item_widget.dart';
 import '../more/more_screen.dart';
 
@@ -19,19 +21,20 @@ class _ThirdPartWidgetState extends State<ThirdPartWidget> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        titleButtonWidget("Trailers", () => Navigator.of(context).pushNamed(MoreScreen.routeName, arguments: "trailers"), Theme.of(context).accentColor),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+          const Text('Trailers'),
+          IconButton(icon: const Icon(Icons.grid_view, size: 20, color: yellow1), onPressed: () =>
+              Navigator.of(context)
+                  .pushNamed(MoreScreen.routeName, arguments: "trailers"),),
+        ],),
         SizedBox(
           height: 200,
           child: FutureBuilder(
               future: getThirdPartItems(),
-              builder: (context, AsyncSnapshot snapshot) {
-                if (snapshot.hasData) {
-                  return trailerList(snapshot.data);
-                }
-                return const SizedBox(
-                  height: 1,
-                );
-              }),
+              builder: (context, AsyncSnapshot snapshot) => (snapshot.hasData) ? trailerList(snapshot.data) : HorizontalShimmerListWidget()
+              ),
         ),
         Container(height: 10),
       ],

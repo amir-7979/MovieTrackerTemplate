@@ -1,5 +1,6 @@
 import 'package:app04/utilities/http_helper.dart';
 import 'package:flutter/material.dart';
+import '../helper_widgets/horizontal_shimmer.dart';
 import '../helper_widgets/show-part-widget.dart';
 
 class SecondPartWidget extends StatefulWidget {
@@ -55,13 +56,7 @@ class _SecondPartWidgetState extends State<SecondPartWidget> {
           height: 220,
           child: FutureBuilder(
               future: getSecondPartItems(i),
-              builder: (context, AsyncSnapshot snapshot) {
-                if (snapshot.hasData) {
-                  return showPartWidget(snapshot.data);
-                } else {
-                  return Container(height: 1);
-                }
-              }),
+              builder: (context, AsyncSnapshot snapshot) => (snapshot.hasData) ? showPartWidget(snapshot.data) : HorizontalShimmerListWidget()),
         ),
       ],
     );

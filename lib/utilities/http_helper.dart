@@ -216,6 +216,8 @@ Future<List<LowDataItem>?> getSearchItems(String title, int page, String filter)
 }
 
 Future<SerialInfoModel?> getSerialInfo(String txt) async {
+  print('------'+txt);
+
   try {
     final response = await dio.get(
       'movies/searchbyid/$txt/high',
@@ -223,6 +225,8 @@ Future<SerialInfoModel?> getSerialInfo(String txt) async {
     );
     return SerialInfoModel.fromJson(response.data['data']);
   } catch (error) {
+    print(error);
+
     return null;
   }
 }
@@ -253,6 +257,8 @@ Future<List<Genre>?> getGenres() async {
 }
 
 Future<List<LowDataItem>?> getGenreItems(String txt) async {
+  print(txt);
+  txt = txt.replaceAll('-', ' ');
   try {
     final response = await dio.get(
       'movies/genres/$txt/serial-movie-anime_movie-anime_serial/low/0-10/0-10/1',
@@ -262,6 +268,7 @@ Future<List<LowDataItem>?> getGenreItems(String txt) async {
         .map((e) => LowDataItem.fromJson(e))
         .toList();
   } catch (error) {
+    print(error);
     return null;
   }
 }
@@ -305,12 +312,14 @@ Future<List<LowDataItem>?> getMoreMovie(String txt, int page) async {
   }
 }
 
-Future<void> likeOrDislikeMovie(String type, String id, bool remove) async {
+Future<int> likeOrDislikeMovie(String type, String id, bool remove) async {
   try {
     final response = await dio.put('movies/likeOrDislike/$type/$id',
         queryParameters: {'remove': remove});
+   return int.parse(response.data['code']);
   } catch (error) {
-    return null;
+    return -1;
+
   }
 }
 

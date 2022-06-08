@@ -3,6 +3,8 @@ import 'package:app04/screens/helper_widgets/horizontal_item_widget.dart';
 import 'package:app04/screens/helper_widgets/title_button_widget.dart';
 import 'package:app04/utilities/http_helper.dart';
 import 'package:flutter/material.dart';
+import '../../utilities/consts.dart';
+import '../helper_widgets/horizontal_shimmer.dart';
 import '../more/more_screen.dart';
 
 class TopsByLikeWidget extends StatefulWidget {
@@ -19,21 +21,20 @@ class _TopsByLikeWidgetState extends State<TopsByLikeWidget> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        titleButtonWidget("TopsByLike", () =>
-            Navigator.of(context).pushNamed(
-                MoreScreen.routeName, arguments: "topsByLikes"), Theme.of(context).accentColor),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            const Text('TopsByLike'),
+            IconButton(icon: const Icon(Icons.grid_view, size: 20, color: yellow1), onPressed: () =>
+                Navigator.of(context)
+                    .pushNamed(MoreScreen.routeName, arguments: "topsByLikes"),),
+          ],),
+
         SizedBox(
           height: 250,
           child: FutureBuilder(
               future: getTopsByLikes(),
-              builder: (context, AsyncSnapshot snapshot) {
-                if (snapshot.hasData) {
-                  return topsByLike(snapshot.data);
-                }
-                return const SizedBox(
-                  height: 1,
-                );
-              }),
+              builder: (context, AsyncSnapshot snapshot) => (snapshot.hasData) ? topsByLike(snapshot.data) : HorizontalShimmerListWidget()),
         ),
       ],
     );

@@ -11,8 +11,7 @@ class CacheImage extends StatelessWidget {
   Widget build(BuildContext context) {
     return (imageUrl != null && imageUrl!.isNotEmpty) ? CachedNetworkImage(
       imageUrl:  imageUrl! ,
-      errorWidget: (context, url, error) =>
-      const Icon(Icons.error),
+      errorWidget: (context, url, error) => Image.asset('assets/images/no_image.jpg'),
     ) : Container();
   }
 }

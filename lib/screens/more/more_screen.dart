@@ -16,6 +16,7 @@ class MoreScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     _type = ModalRoute.of(context)!.settings.arguments as String;
     return Scaffold(
+
       appBar: AppBar(title: const Text("MoreItem")),
       body: ScrollListWidget(getMoreItem),
     );

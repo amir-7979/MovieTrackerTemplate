@@ -1,7 +1,7 @@
 import 'package:app04/screens/specific_genre/specific-genre_item.dart';
 import 'package:app04/utilities/http_helper.dart';
 import 'package:flutter/material.dart';
-
+import '../../utilities/consts.dart';
 
 class SpecificGenreScreen extends StatelessWidget {
   static const routeName = '/specific-genre-screen';
@@ -11,6 +11,7 @@ class SpecificGenreScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     String name = ModalRoute.of(context)!.settings.arguments as String;
     return Scaffold(
+      backgroundColor: color4,
       appBar: AppBar(title: Text(name)),
       body: FutureBuilder(
           future: getGenreItems(name),

@@ -102,22 +102,15 @@ class _ScrollListWidgetState extends State<ScrollListWidget> {
             children: [
               Column(
                 children: [
-                  Expanded(
+                  (movies.isNotEmpty) ? Expanded(
                     child: ListView.builder(
-                        padding: const EdgeInsets.all(8),
+                        padding: const EdgeInsets.all(5),
                         controller: _controller,
                         itemCount: movies.length,
                         itemBuilder: (_, int index) {
                           return VerticalItemWidget(movies[index]);
                         }),
-                  ),
-                  if (_hasNextPage == false)
-                    Container(
-                      color: Colors.amber,
-                      child: const Center(
-                        child: Text('You have fetched all of the content'),
-                      ),
-                    ),
+                  ) : const SizedBox(height: 1),
                   if (_isLoadMoreRunning == true)
                     const Align(
                       alignment: Alignment.bottomCenter,
@@ -138,7 +131,7 @@ class _ScrollListWidgetState extends State<ScrollListWidget> {
                 Align(
                   alignment: Alignment.bottomRight,
                   child: Padding(
-                    padding: const EdgeInsets.all(8.0),
+                    padding: const EdgeInsets.only(right: 15, bottom: 15),
                     child: SizedBox(
                       height: 50,
                       width: 50,

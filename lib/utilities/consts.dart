@@ -20,12 +20,15 @@ bool isLoggedIn = false;
 bool activeConnection = false;
 bool isLodding = true;
 
-const color1 = Color(0xff5f1f46);
-const color2 = Color(0xff321177);
+const color1 = Color(0xff313144);
+const color2 = Color(0xffdcd31a);
 const color3 = Color(0xff626aac);
 const disabled = Color(0xff282a2c);
 const active = Color(0xff20a311);
 const color4 = Color(0xff21212d);
+const redLable = Color(0xffffcb00);
+const yellow1 = Color(0xffffa600);
+const black1 = Color(0x98000000);
 
 
 

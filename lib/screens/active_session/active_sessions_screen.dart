@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../models/session_model.dart';
+import '../../utilities/consts.dart';
 import '../../utilities/http_helper.dart';
 
 class ActiveSessionsScreen extends StatelessWidget {
@@ -9,22 +10,25 @@ class ActiveSessionsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: const Text('Active Session')),
-      body: FutureBuilder(
-          future: activeSessions(),
-          builder: (context, AsyncSnapshot snapshot) {
-            if (snapshot.hasData) {
-              return ActiveSessionWidget(snapshot.data, context);
-            } else {
-              return const Center(
-                child: CircularProgressIndicator(
-                  color: Colors.white,
-                  strokeWidth: 4,
-                ),
-              );
-            }
-          }),
+    return SafeArea(
+      child: Scaffold(
+        backgroundColor: color4,
+        appBar: AppBar(title: const Text('Active Session')),
+        body: FutureBuilder(
+            future: activeSessions(),
+            builder: (context, AsyncSnapshot snapshot) {
+              if (snapshot.hasData) {
+                return ActiveSessionWidget(snapshot.data, context);
+              } else {
+                return const Center(
+                  child: CircularProgressIndicator(
+                    color: Colors.white,
+                    strokeWidth: 4,
+                  ),
+                );
+              }
+            }),
+      ),
     );
   }
 

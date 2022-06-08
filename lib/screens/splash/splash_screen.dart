@@ -5,8 +5,8 @@ import '../../utilities/consts.dart';
 import '../login_sgin_up/login_screen.dart';
 import '../start/start_screen.dart';
 
-class SplitScreen extends StatelessWidget {
-    const SplitScreen({Key? key}) : super(key: key);
+class SplashScreen extends StatelessWidget {
+    const SplashScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -34,10 +34,10 @@ class SplitScreen extends StatelessWidget {
                         child: Image.asset('assets/images/splash.png')),
                   ),
                   screenFunction: () async {
-                    //await initialize();
-                    await Future.delayed(Duration(seconds: 1));
-                    //return (isLoggedIn) ? StartScreen() : LoginScreen();
-                    return SplitScreen();
+                    await initialize();
+                    //await Future.delayed(Duration(seconds: 1));
+                    return (isLoggedIn) ? StartScreen() : LoginScreen();
+                    //return SplitScreen();
                   },
                 ),
               ),

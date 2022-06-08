@@ -16,7 +16,7 @@ class HorizontalItemWidget extends StatelessWidget {
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => InfoScreen(args: {'id': _itemModel.id, 'url': _itemModel.posters[0].url, 'type': _itemModel.type}),
+            builder: (context) => InfoScreen(args: {'id': _itemModel.id, 'url': _itemModel.posters.isNotEmpty ? _itemModel.posters[0].url ?? '' : 'assets/images/no_image.jpg', 'type': _itemModel.type}),
           ),
         ),
       child: Padding(
@@ -42,8 +42,8 @@ class HorizontalItemWidget extends StatelessWidget {
                 child: Align(
                   alignment: Alignment.bottomRight,
                   child: Container(
-                    width: 30,
-                    height: 30,
+                    width: 25,
+                    height: 25,
                     child: Center(child: Text(_itemModel.rating.imdb.toString())),
                     decoration: BoxDecoration(
                         shape: BoxShape.circle,
@@ -57,10 +57,12 @@ class HorizontalItemWidget extends StatelessWidget {
             Container(height: 4),
             SizedBox(
               width: itemWidth,
-              child: Text(
-                _itemModel.title,
-                overflow: TextOverflow.ellipsis,
-                textAlign: TextAlign.center,
+              child: Padding(
+                padding: const EdgeInsets.only(left: 5),
+                child: Text(
+                  _itemModel.title,
+                  overflow: TextOverflow.ellipsis,
+                ),
               ),
             ),
           ],

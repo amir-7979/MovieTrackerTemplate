@@ -8,6 +8,8 @@ class GenresScreen extends StatelessWidget {
 
   const GenresScreen({Key? key}) : super(key: key);
 
+
+
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(

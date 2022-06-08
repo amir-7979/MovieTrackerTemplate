@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import '../../models/properties_model.dart';
+import '../../utilities/consts.dart';
 
 class DownloadScreen extends StatefulWidget {
   final Map<String, dynamic>? args;
@@ -54,6 +55,7 @@ class _DownloadScreenState extends State<DownloadScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: color4,
       appBar: AppBar(title: const Text('download screen')),
       body: ListView.separated(
         itemCount: _downloadControllers.length,

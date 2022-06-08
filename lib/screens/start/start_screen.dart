@@ -1,10 +1,10 @@
-import 'package:app04/screens/notification/Notification_screen.dart';
 import 'package:app04/screens/bookmark/bookmark_screen.dart';
 import 'package:app04/screens/home/home_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:convex_bottom_bar/convex_bottom_bar.dart';
 import 'package:flutter/services.dart';
 import '../../utilities/consts.dart';
+import '../favorite/Favorite_screen.dart';
 import '../genre/genre_screen.dart';
 import '../helper_widgets/internet_alert_dialog_widget.dart';
 import '../profile/profile_page_screen.dart';
@@ -32,11 +32,12 @@ class _StartScreenState extends State<StartScreen> {
 
   @override
   Widget build(BuildContext context) {
-    SystemChrome.setEnabledSystemUIMode (SystemUiMode.manual, overlays: [SystemUiOverlay.bottom]);
+    //SystemChrome.setEnabledSystemUIMode (SystemUiMode.manual, overlays: [SystemUiOverlay.bottom]);
     return DefaultTabController(
       length: 5,
       initialIndex: 2,
       child: Scaffold(
+        backgroundColor: color4,
         body: (activeConnection == false) ? const InternetAlertDialogWidget() : Column(
           children:  [
             Expanded(
@@ -45,7 +46,7 @@ class _StartScreenState extends State<StartScreen> {
                   const GenresScreen(),
                   const BookMarkScreen(),
                   HomeScreen(),
-                  const favoriteScreen(),
+                  const FavoriteScreen(),
                   const ProfileScreen(),
                 ],
               ),

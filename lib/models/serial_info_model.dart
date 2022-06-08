@@ -9,8 +9,6 @@ class SerialInfoModel {
   String? title;
   String? type;
   String? rawTitle;
-  List<dynamic>? alternateTitles;
-  List<dynamic>? titleSynonyms;
   int? like;
   int? dislike;
   int? view;
@@ -59,7 +57,6 @@ class SerialInfoModel {
   String? awards;
   String? animeType;
   String? animeSource;
-  List<dynamic>? relatedTitles;
   List<ActorsAndCharacters>? actorsAndCharacters;
   Staff? staff;
   List<dynamic>? qualities;
@@ -74,8 +71,6 @@ class SerialInfoModel {
     this.title,
     this.type,
     this.rawTitle,
-    this.alternateTitles,
-    this.titleSynonyms,
     this.like,
     this.dislike,
     this.view,
@@ -123,7 +118,6 @@ class SerialInfoModel {
     this.awards,
     this.animeType,
     this.animeSource,
-    this.relatedTitles,
     this.actorsAndCharacters,
     this.staff,
     this.qualities,
@@ -140,8 +134,7 @@ class SerialInfoModel {
     title = json['title'] as String?;
     type = json['type'] as String?;
     rawTitle = json['rawTitle'] as String?;
-    alternateTitles = json['alternateTitles'] as List?;
-    titleSynonyms = json['titleSynonyms'] as List?;
+    //alternateTitles = json['alternateTitles'] as List<String>;
     like = json['like'] as int?;
     dislike = json['dislike'] as int?;
     view = json['view'] as int?;
@@ -191,7 +184,6 @@ class SerialInfoModel {
     awards = json['awards'] as String?;
     animeType = json['animeType'] as String?;
     animeSource = json['animeSource'] as String?;
-    relatedTitles = json['relatedTitles'] as List?;
     actorsAndCharacters = (json['actorsAndCharacters'] as List?)?.map((dynamic e) => ActorsAndCharacters.fromJson(e as Map<String,dynamic>)).toList();
     staff = (json['staff'] as Map<String,dynamic>?) != null ? Staff.fromJson(json['staff'] as Map<String,dynamic>) : null;
     qualities = json['qualities'] as List?;
