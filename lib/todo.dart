@@ -23,3 +23,5 @@
 //todo confirm logout await
 //todo load info from local storage
 //todo show list is empty
+//todo fonts , color
+//todo shimmer problem

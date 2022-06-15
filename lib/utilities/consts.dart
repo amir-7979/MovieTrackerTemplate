@@ -1,5 +1,6 @@
 import 'package:app04/screens/download/download_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import '../screens/active_session/active_sessions_screen.dart';
 import '../screens/genre/genre_screen.dart';
 import '../screens/info/info_screen.dart';
@@ -29,8 +30,7 @@ const color4 = Color(0xff21212d);
 const redLable = Color(0xffffcb00);
 const yellow1 = Color(0xffffa600);
 const black1 = Color(0x98000000);
-
-
+const color5 = Color(0xff2d2d3d);
 
 final darkThem = ThemeData(
   brightness: Brightness.dark,
@@ -45,15 +45,12 @@ final darkThem = ThemeData(
       ),
     ),
   ),
-// font
-  fontFamily: 'Georgia',
-//text style
-  textTheme: const TextTheme(
+  textTheme: TextTheme(
     headline1:
-    TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold),
-    headline6:
-    TextStyle(fontSize: 20.0, fontStyle: FontStyle.italic),
-    bodyText2: TextStyle(fontSize: 14.0, fontFamily: 'Hind'),
+      GoogleFonts.ubuntu(textStyle: const TextStyle(fontSize: 19.0, fontWeight: FontWeight.normal, fontStyle: FontStyle.italic)),
+    headline2:
+    GoogleFonts.ubuntu(textStyle: const TextStyle(fontSize: 18.0, color: Colors.white)),
+    bodyText2: const TextStyle(fontSize: 14.0, fontFamily: 'Hind'),
 
   ),
 );
@@ -65,7 +62,7 @@ final routes = {
   SignUpScreen.routeName: (_) => SignUpScreen(),
   SearchScreen.routeName: (_) => const SearchScreen(),
   ProfileScreen.routeName: (_) => const ProfileScreen(),
-  InfoScreen.routeName: (_) => InfoScreen(),
+  InfoScreen.routeName: (_) => const InfoScreen(),
   GenresScreen.routeName: (_) => const GenresScreen(),
   SpecificGenreScreen.routeName: (_) => SpecificGenreScreen(),
   ActiveSessionsScreen.routeName: (_) => const ActiveSessionsScreen(),

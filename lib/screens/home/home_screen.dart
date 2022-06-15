@@ -22,8 +22,8 @@ class _HomeScreenState extends State<HomeScreen> {
     return Scaffold(
       backgroundColor: color4,
       appBar: AppBar(
-        title: Row(children: const [
-          Text('Movie Tracker'),
+        title: Row(children: [
+          Text('Movie Tracker', style: Theme.of(context).textTheme.headline1,),
         ]),
         actions: [
           IconButton(

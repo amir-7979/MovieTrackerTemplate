@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 import '../../models/properties_model.dart';
 import '../../utilities/consts.dart';
@@ -46,7 +47,7 @@ class _DownloadScreenState extends State<DownloadScreen> {
      _downloadControllers = List<DownloadController>.generate(
        episode.length,
            (index) =>
-           SimulatedDownloadController(onOpenDownload: () {
+           SimulatedDownloadController(downloadLink: '', onOpenDownload: () {
              _openDownload(index);
            }),
      );
@@ -61,12 +62,14 @@ class _DownloadScreenState extends State<DownloadScreen> {
         itemCount: _downloadControllers.length,
         separatorBuilder: (_, __) => const Divider(),
         itemBuilder: (ctx, i){
-          return _buildListItem(ctx, i);
+          //return _buildListItem(ctx, i);
+          return Container();
         }
     ),
     );
   }
 
+/*
   Widget _buildListItem(BuildContext context, int index) {
     final theme = Theme.of(context);
     final downloadController = _downloadControllers[index];
@@ -89,6 +92,7 @@ class _DownloadScreenState extends State<DownloadScreen> {
           animation: downloadController,
           builder: (context, child) {
             return DownloadButton(
+              downloadLink: downloadController;
               status: downloadController.downloadStatus,
               downloadProgress: downloadController.progress,
               onDownload: downloadController.startDownload,
@@ -100,6 +104,7 @@ class _DownloadScreenState extends State<DownloadScreen> {
       ),
     );
   }
+*/
 }
 
 @immutable
@@ -157,15 +162,20 @@ abstract class DownloadController implements ChangeNotifier {
 class SimulatedDownloadController extends DownloadController
     with ChangeNotifier {
   SimulatedDownloadController({
+    required String downloadLink,
+
     DownloadStatus downloadStatus = DownloadStatus.notDownloaded,
     double progress = 0.0,
     required VoidCallback onOpenDownload,
   })
-      : _downloadStatus = downloadStatus,
+      : downloadLink = downloadLink,
+        _downloadStatus = downloadStatus,
         _progress = progress,
         _onOpenDownload = onOpenDownload;
 
+
   DownloadStatus _downloadStatus;
+  final String downloadLink;
 
   @override
   DownloadStatus get downloadStatus => _downloadStatus;
@@ -254,6 +264,7 @@ class SimulatedDownloadController extends DownloadController
 class DownloadButton extends StatelessWidget {
   const DownloadButton({
     Key? key,
+    required this.downloadLink,
     required this.status,
     this.downloadProgress = 0.0,
     required this.onDownload,
@@ -261,7 +272,7 @@ class DownloadButton extends StatelessWidget {
     required this.onOpen,
     this.transitionDuration = const Duration(milliseconds: 500),
   }) : super(key: key);
-
+  final String downloadLink;
   final DownloadStatus status;
   final double downloadProgress;
   final VoidCallback onDownload;
@@ -275,8 +286,17 @@ class DownloadButton extends StatelessWidget {
 
   bool get _isDownloaded => status == DownloadStatus.downloaded;
 
-  void _onPressed() {
+  void _onPressed(ctx, link) {
+    ScaffoldMessenger.of(ctx).showSnackBar(const SnackBar(
+      content: Text("Download link copied to clipboard"),
+      duration: Duration(seconds: 1),
+    ));
+    Clipboard.setData(ClipboardData(text: link));
+
     switch (status) {
+
+
+
       case DownloadStatus.notDownloaded:
         onDownload();
         break;
@@ -295,7 +315,7 @@ class DownloadButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: _onPressed,
+      onTap: () => _onPressed(context, downloadLink),
       child: Stack(
         children: [
           ButtonShapeWidget(

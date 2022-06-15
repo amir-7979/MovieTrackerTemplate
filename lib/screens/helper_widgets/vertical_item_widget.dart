@@ -2,6 +2,7 @@ import 'package:app04/models/low_data_item.dart';
 import 'package:app04/screens/info/info_screen.dart';
 import 'package:flutter/material.dart';
 import '../../utilities/cache_image.dart';
+import '../../utilities/consts.dart';
 
 class VerticalItemWidget extends StatelessWidget {
   final LowDataItem _itemModel;
@@ -13,10 +14,11 @@ class VerticalItemWidget extends StatelessWidget {
       onTap: ()=> Navigator.push(
         context,
         MaterialPageRoute(
-          builder: (context) => InfoScreen(args: {'id': _itemModel.id, 'url': _itemModel.posters[0].url, 'type': _itemModel.type}),
+          builder: (context) => InfoScreen(args: {'id': _itemModel.id, 'url': _itemModel.posters.isNotEmpty ? _itemModel.posters[0].url ?? '' : 'assets/images/no_image.jpg', 'type': _itemModel.type}),
         ),
       ),
       child: Card(
+        color: color5,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(10),
         ),
@@ -31,7 +33,7 @@ class VerticalItemWidget extends StatelessWidget {
                 borderRadius: BorderRadius.circular(10),
                 child: FittedBox(
                   child: CacheImage((_itemModel.posters.isNotEmpty) ? _itemModel.posters[0].url : ''),
-                  fit: BoxFit.contain,
+                  fit: BoxFit.fill,
                 ),
               ),
             ),

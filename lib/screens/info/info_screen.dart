@@ -1,7 +1,6 @@
 import 'package:app04/utilities/consts.dart';
 import 'package:app04/utilities/http_helper.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 import 'package:scroll_app_bar/scroll_app_bar.dart';
 import '../../utilities/cache_image.dart';
 import 'download_buttons_widget.dart';
@@ -88,7 +87,7 @@ class _InfoScreenState extends State<InfoScreen> {
                       children: [
                         InfoSectionWidget(snapshot.data),
                         (isMovie)
-                            ? DownloadMovieWidget(snapshot.data.posters[0].url,
+                            ? DownloadMovieWidget(snapshot.data.posters.isNotEmpty ? snapshot.data.posters[0].url : '',
                                 snapshot.data.qualities)
                             : DownloadSeasonsWidget(snapshot.data),
                       ],

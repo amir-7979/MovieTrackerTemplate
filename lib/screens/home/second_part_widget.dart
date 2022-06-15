@@ -30,10 +30,7 @@ class _SecondPartWidgetState extends State<SecondPartWidget> {
           children: [
             Padding(
               padding: const EdgeInsets.fromLTRB(5, 0, 0, 0),
-              child: Text(
-                "TimeLine",
-                style: TextStyle(color: Theme.of(context).accentColor),
-              ),
+              child: Text('TimeLine', style: Theme.of(context).textTheme.headline2),
             ),
             Row(children: [
               IconButton(

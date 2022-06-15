@@ -24,8 +24,8 @@ class _ThirdPartWidgetState extends State<ThirdPartWidget> {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-          const Text('Trailers'),
-          IconButton(icon: const Icon(Icons.grid_view, size: 20, color: yellow1), onPressed: () =>
+            Text('Trailers', style: Theme.of(context).textTheme.headline2),
+            IconButton(icon: const Icon(Icons.grid_view, size: 20, color: yellow1), onPressed: () =>
               Navigator.of(context)
                   .pushNamed(MoreScreen.routeName, arguments: "trailers"),),
         ],),

@@ -1,6 +1,6 @@
 import 'package:app04/models/low_data_item.dart';
 import 'package:flutter/material.dart';
-
+import '../../utilities/consts.dart';
 import '../../utilities/http_helper.dart';
 import '../helper_widgets/scroll_list_widget.dart';
 
@@ -16,7 +16,7 @@ class MoreScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     _type = ModalRoute.of(context)!.settings.arguments as String;
     return Scaffold(
-
+      backgroundColor: color4,
       appBar: AppBar(title: const Text("MoreItem")),
       body: ScrollListWidget(getMoreItem),
     );

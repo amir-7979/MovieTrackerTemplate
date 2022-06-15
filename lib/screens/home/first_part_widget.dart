@@ -13,7 +13,7 @@ class FirstPartWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return FutureBuilder(
         future: getFirstPartItems(),
-        builder: (context, AsyncSnapshot snapshot) => (snapshot.hasData) ? multipleParts(context, snapshot.data) :  multipleHorizontalShimmerWidget());
+        builder: (context, AsyncSnapshot snapshot) => (snapshot.hasData) ? multipleParts(context, snapshot.data) :  multipleHorizontalShimmerWidget(context));
   }
 
 
@@ -25,7 +25,7 @@ class FirstPartWidget extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              const Text('News'),
+              Text('News', style: Theme.of(context).textTheme.headline2),
               IconButton(icon: const Icon(Icons.grid_view, size: 20, color: yellow1), onPressed: () =>
                   Navigator.of(context)
                       .pushNamed(MoreScreen.routeName, arguments: "news"),),
@@ -36,7 +36,7 @@ class FirstPartWidget extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              const Text('Updates'),
+               Text('Updates', style: Theme.of(context).textTheme.headline2),
               IconButton(icon: const Icon(Icons.grid_view, size: 20, color: yellow1), onPressed: () =>
                   Navigator.of(context)
                       .pushNamed(MoreScreen.routeName, arguments: "updates"),),
@@ -47,7 +47,7 @@ class FirstPartWidget extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              const Text('In Theater'),
+               Text('In Theater', style: Theme.of(context).textTheme.headline2),
               IconButton(icon: const Icon(Icons.grid_view, size: 20, color: yellow1), onPressed: () =>
                   Navigator.of(context)
                       .pushNamed(MoreScreen.routeName, arguments: "updates"),),
@@ -58,7 +58,7 @@ class FirstPartWidget extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              const Text('ComingSoon'),
+               Text('ComingSoon', style: Theme.of(context).textTheme.headline2),
               IconButton(icon: const Icon(Icons.grid_view, size: 20, color: yellow1), onPressed: () =>
                   Navigator.of(context)
                       .pushNamed(MoreScreen.routeName, arguments: "updates"),),
@@ -70,7 +70,7 @@ class FirstPartWidget extends StatelessWidget {
     );
   }
 
-  Widget multipleHorizontalShimmerWidget() {
+  Widget multipleHorizontalShimmerWidget(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.only(left: 5),
       child: Column(
@@ -78,7 +78,7 @@ class FirstPartWidget extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              const Text('News'),
+               Text('News', style: Theme.of(context).textTheme.headline2),
               IconButton(icon: const Icon(Icons.grid_view, size: 20, color: yellow1), onPressed: (){}),
             ],
           ),
@@ -87,7 +87,7 @@ class FirstPartWidget extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              const Text('Updates'),
+              Text('Updates', style: Theme.of(context).textTheme.headline2),
               IconButton(icon: const Icon(Icons.grid_view, size: 20, color: yellow1), onPressed: () {}),
             ],
           ),
@@ -96,7 +96,7 @@ class FirstPartWidget extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              const Text('In Theater'),
+               Text('In Theater', style: Theme.of(context).textTheme.headline2),
               IconButton(icon: const Icon(Icons.grid_view, size: 20, color: yellow1), onPressed: () {}),
             ],
           ),
@@ -105,7 +105,7 @@ class FirstPartWidget extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              const Text('ComingSoon'),
+               Text('ComingSoon', style: Theme.of(context).textTheme.headline2),
               IconButton(icon: const Icon(Icons.grid_view, size: 20, color: yellow1), onPressed: (){})
             ],
           ),

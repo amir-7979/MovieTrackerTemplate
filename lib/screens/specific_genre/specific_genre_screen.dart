@@ -1,3 +1,4 @@
+import 'package:app04/screens/helper_widgets/vertical_item_widget.dart';
 import 'package:app04/screens/specific_genre/specific-genre_item.dart';
 import 'package:app04/utilities/http_helper.dart';
 import 'package:flutter/material.dart';
@@ -21,7 +22,7 @@ class SpecificGenreScreen extends StatelessWidget {
                   padding: const EdgeInsets.all(8),
                   itemCount: snapshot.data.length,
                   itemBuilder: (BuildContext context, int index) {
-                    return SpecificGenreItem(snapshot.data[index].id, snapshot.data[index].rawTitle, snapshot.data[index].type, snapshot.data[index].rating.imdb, int.parse(snapshot.data[index].year), snapshot.data[index].posters[0].url);
+                    return VerticalItemWidget(snapshot.data[index]);
                   });
             } else {
               return const Center(

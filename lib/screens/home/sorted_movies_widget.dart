@@ -23,7 +23,7 @@ class _SortedMoviesWidgetState extends State<SortedMoviesWidget> {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            const Text('SortedMovies'),
+            Text('SortedMovies', style: Theme.of(context).textTheme.headline2),
             IconButton(
               icon: const Icon(Icons.grid_view, size: 20, color: yellow1),
               onPressed: () => Navigator.of(context)

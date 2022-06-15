@@ -1,8 +1,5 @@
 import 'package:flutter/material.dart';
-
 import '../../utilities/cache_image.dart';
-import '../../utilities/consts.dart';
-import '../../utilities/consts.dart';
 import '../../utilities/consts.dart';
 import '../specific_genre/specific_genre_screen.dart';
 
