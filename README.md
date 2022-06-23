@@ -1,4 +1,4 @@
-# app04
+# Movie Tracker
 
 A new Flutter project.
 
