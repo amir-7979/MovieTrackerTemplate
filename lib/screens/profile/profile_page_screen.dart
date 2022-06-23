@@ -1,6 +1,7 @@
 import 'package:app04/screens/login_sgin_up/login_screen.dart';
 import 'package:flutter/material.dart';
 import '../../models/profile_model.dart';
+import '../../utilities/consts.dart';
 import '../../utilities/http_helper.dart';
 import '../active_session/active_sessions_screen.dart';
 import 'field_widget.dart';
@@ -12,19 +13,35 @@ class ProfileScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return  FutureBuilder(
-          future: myProfile(),
-          builder: (context, AsyncSnapshot snapshot) {
-            if (snapshot.hasData) {
-              return ProfileWidget(snapshot.data, context);
+    return  Scaffold(
+      backgroundColor: color4,
+      appBar: AppBar(title: Text('Profile'),
+      actions: [
+        IconButton(
+            splashRadius: 0.1,
+            onPressed: () async {
+              //Navigator.of(context).pop();
+              await logOutUser();
+
+              Navigator.of(context)
+                  .pushReplacementNamed(LoginScreen.routeName);
+            },
+            icon: const Icon(Icons.logout)),
+      ]),
+      body: FutureBuilder(
+            future: myProfile(),
+            builder: (context, AsyncSnapshot snapshot) {
+              if (snapshot.hasData) {
+                return ProfileWidget(snapshot.data, context);
+              }
+              return const Center(
+                child: CircularProgressIndicator(
+                  color: Colors.white,
+                  strokeWidth: 4,
+                ),
+              );
             }
-            return const Center(
-              child: CircularProgressIndicator(
-                color: Colors.white,
-                strokeWidth: 4,
-              ),
-            );
-          }
+      ),
     );
   }
 
@@ -35,39 +52,18 @@ class ProfileScreen extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             const SizedBox(height: 10),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                IconButton(
-                    splashRadius: 0.1,
-                    onPressed: () {},
-                    icon: const Icon(Icons.edit)),
-                //IconButton(onPressed: () {}, icon: const Icon(Icons.qr_code)),
-                Center(
-                  child: InkWell(
-                      onTap: () {},
-                      child: ClipRRect(
-                        borderRadius:
-                            const BorderRadius.all(Radius.circular(100)),
-                        child: Image.network(
-                          profile.defaultProfile,
-                          height: 120.0,
-                          width: 120.0,
-                        ),
-                      )),
-                ),
-                IconButton(
-                  splashRadius: 0.1,
-                    onPressed: () async {
-                      //Navigator.of(context).pop();
-                      await logOutUser();
-
-                      Navigator.of(context)
-                          .pushReplacementNamed(LoginScreen.routeName);
-                    },
-                    icon: const Icon(Icons.logout)),
-              ],
+            Center(
+              child: InkWell(
+                  onTap: () {},
+                  child: ClipRRect(
+                    borderRadius:
+                        const BorderRadius.all(Radius.circular(100)),
+                    child: Image.network(
+                      profile.defaultProfile,
+                      height: 120.0,
+                      width: 120.0,
+                    ),
+                  )),
             ),
             const SizedBox(height: 20),
             FieldWidget('Name', profile.publicName),

@@ -1,6 +1,5 @@
 import 'package:app04/utilities/consts.dart';
 import 'package:flutter/material.dart';
-
 import '../../models/search_filter_model.dart';
 
 class FilterWidget extends StatefulWidget {
@@ -10,13 +9,12 @@ class FilterWidget extends StatefulWidget {
 
   @override
   State<FilterWidget> createState() => _FilterWidgetState();
-
 }
 
 class _FilterWidgetState extends State<FilterWidget> {
   RangeValues _imdbRangeValues = const RangeValues(0.0, 10);
   RangeValues _malRangeValues = const RangeValues(0.0, 10);
-  late RangeValues yearRangeValues = RangeValues(1980, 2023);
+  late RangeValues yearRangeValues = const RangeValues(1980, 2023);
   bool censored = false;
   bool dubbed = false;
   bool subTitle = false;
@@ -32,7 +30,7 @@ class _FilterWidgetState extends State<FilterWidget> {
     super.initState();
   }
 
-  void initFilter() {
+  SearchFilter initFilter() {
     String type = '';
     List<String> list = [];
     if (types[0]) list.add('movie');
@@ -45,25 +43,47 @@ class _FilterWidgetState extends State<FilterWidget> {
 
     type = type.replaceRange(type.length - 1, null, '');
     _searchFilter = SearchFilter(
-        types: type,
-        imdbScores:
-        '${_imdbRangeValues.start.toStringAsFixed(1)}-${_imdbRangeValues.end.toStringAsFixed(1)}',
-        malScores: '${_malRangeValues.start.toStringAsFixed(1)}-${_malRangeValues.end.toStringAsFixed(1)}',
-        years: '${yearRangeValues.start.toStringAsFixed(0)}-${yearRangeValues.end.toStringAsFixed(0)}');
+      type,
+      '${yearRangeValues.start.toStringAsFixed(0)}-${yearRangeValues.end.toStringAsFixed(0)}',
+      '${_imdbRangeValues.start.toStringAsFixed(1)}-${_imdbRangeValues.end.toStringAsFixed(1)}',
+      '${_malRangeValues.start.toStringAsFixed(1)}-${_malRangeValues.end.toStringAsFixed(1)}',
+    );
+    return _searchFilter;
   }
 
   @override
   Widget build(BuildContext context) {
-
-    return Stack(children: [
-      SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+    return ListView(
+      children: [
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Padding(
-              padding: const EdgeInsets.fromLTRB(10, 10, 0, 7),
-              child: Text('Type :', style: Theme.of(context).textTheme.bodyMedium),
+            const Padding(
+              padding: EdgeInsets.only(left: 5),
+              child: Text(
+                'Filter',
+                style: TextStyle(fontSize: 20),
+              ),
             ),
+            ElevatedButton(
+              onPressed: () {
+                widget.submitFilter(initFilter());
+                Navigator.pop(context);
+              },
+              child: const Icon(Icons.check),
+              style: ElevatedButton.styleFrom(
+                  shape: const CircleBorder(),
+                  elevation: 5,
+                  primary: Colors.green),
+            )
+          ],
+        ),
+        Padding(
+          padding: const EdgeInsets.fromLTRB(10, 5, 0, 10),
+          child: Text('Type', style: Theme.of(context).textTheme.bodyMedium),
+        ),
+        Row(
+          children: [
             SizedBox(
               height: 25,
               child: Row(
@@ -74,27 +94,12 @@ class _FilterWidgetState extends State<FilterWidget> {
                     onChanged: (value) => setState(() => types[0] = value!),
                     activeColor: active,
                   ),
-                   Text(
-                    'Movie', style: Theme.of(context).textTheme.bodyMedium
-                  ),
+                  Text('Movie', style: Theme.of(context).textTheme.bodyMedium),
                 ],
               ),
             ),
-            SizedBox(
-              height: 25,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  Checkbox(
-                    value: types[1],
-                    onChanged: (value) => setState(() => types[1] = value!),
-                    activeColor: active,
-                  ),
-                  Text(
-                    'Serial', style: Theme.of(context).textTheme.bodyMedium
-                  ),
-                ],
-              ),
+            const SizedBox(
+              width: 17,
             ),
             SizedBox(
               height: 25,
@@ -106,11 +111,32 @@ class _FilterWidgetState extends State<FilterWidget> {
                     onChanged: (value) => setState(() => types[2] = value!),
                     activeColor: active,
                   ),
-                   Text(
-                    'Anime Movie', style: Theme.of(context).textTheme.bodyMedium
-                  ),
+                  Text('Anime Movie',
+                      style: Theme.of(context).textTheme.bodyMedium),
                 ],
               ),
+            ),
+          ],
+        ),
+        const SizedBox(height: 10),
+        Row(
+          children: [
+            SizedBox(
+              height: 25,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Checkbox(
+                    value: types[1],
+                    onChanged: (value) => setState(() => types[1] = value!),
+                    activeColor: active,
+                  ),
+                  Text('Serial', style: Theme.of(context).textTheme.bodyMedium),
+                ],
+              ),
+            ),
+            const SizedBox(
+              width: 20,
             ),
             SizedBox(
               height: 25,
@@ -122,152 +148,143 @@ class _FilterWidgetState extends State<FilterWidget> {
                     onChanged: (value) => setState(() => types[3] = value!),
                     activeColor: active,
                   ),
-                   Text(
-                    'Anime Serial', style: Theme.of(context).textTheme.bodyMedium
-                  ),
+                  Text('Anime Serial',
+                      style: Theme.of(context).textTheme.bodyMedium),
                 ],
               ),
             ),
-            Row(
-              children: [
-                 Padding(
-                  padding: EdgeInsets.fromLTRB(10, 10, 0, 0),
-                  child: Text('IMDB Rate :   $imdbRate', style: Theme.of(context).textTheme.bodyMedium),
-                ),
-              ],
-            ),
-            RangeSlider(
-              values: _imdbRangeValues,
-              max: 10,
-              divisions: 100,
-              labels: RangeLabels(
-                _imdbRangeValues.start.toStringAsFixed(1),
-                _imdbRangeValues.end.toStringAsFixed(1),
-              ),
-              onChanged: (RangeValues values) {
-                setState(() {
-                  _imdbRangeValues = values;
-                  imdbRate =
-                  '${_imdbRangeValues.start.toStringAsFixed(
-                      1)}  -  ${_imdbRangeValues.end.toStringAsFixed(1)}';
-                });
-              },
-            ),
-            Row(
-              children: [
-                Padding(
-                  padding: EdgeInsets.fromLTRB(10, 10, 0, 0),
-                  child: Text('Anime Rate :   $malRate', style: Theme.of(context).textTheme.bodyMedium),
-                ),
-              ],
-            ),
-            RangeSlider(
-              values: _malRangeValues,
-              max: 10,
-              divisions: 100,
-              labels: RangeLabels(
-                _malRangeValues.start.toStringAsFixed(1),
-                _malRangeValues.end.toStringAsFixed(1),
-              ),
-              onChanged: (RangeValues values) {
-                setState(() {
-                  _malRangeValues = values;
-                  malRate =
-                  '${_malRangeValues.start.toStringAsFixed(
-                      1)}  -  ${_malRangeValues.end.toStringAsFixed(1)}';
-                });
-              },
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                Row(children: [
-                  SizedBox(
-                    width: 20,
-                    child: Checkbox(
-                      value: censored,
-                      onChanged: (value) => setState(() => censored = value!),
-                      activeColor: active,
-                    ),
-                  ),
-                  Text('Censored', style: Theme.of(context).textTheme.bodyMedium),
-                ],),
-                Row(children: [
-                  SizedBox(
-                    width: 20,
-                    child: Checkbox(
-                      value: dubbed,
-                      onChanged: (value) => setState(() => dubbed = value!),
-                      activeColor: active,
-                    ),
-                  ),
-                  Text('Dubbed', style: Theme.of(context).textTheme.bodyMedium),
-                ],),
-               Row(children: [
-                 SizedBox(
-                   width: 20,
-                   child: Checkbox(
-                     value: subTitle,
-                     onChanged: (value) => setState(() => subTitle = value!),
-                     activeColor: active,
-                   ),
-                 ),
-                 Text('Subtitle', style: Theme.of(context).textTheme.bodyMedium),
-               ],),
-
-              ],
-            ),
-            Row(
-              children: [
-
-              ],
-            ),
-
-            Row(
-              children: [
-                Padding(
-                  padding: EdgeInsets.fromLTRB(10, 10, 0, 0),
-                  child: Text('Year :   $yearRate', style: Theme.of(context).textTheme.bodyMedium),
-                ),
-              ],
-            ),
-            RangeSlider(
-              min: 1980,
-              max: 2022,
-              values: yearRangeValues,
-              labels: RangeLabels(
-                yearRangeValues.start.toString(),
-                yearRangeValues.end.toString(),
-              ),
-              onChanged: (RangeValues values) {
-                setState(() {
-                  yearRangeValues = values;
-                  yearRate =
-                  '${yearRangeValues.start.toStringAsFixed(0)}  -  ${yearRangeValues.end.toStringAsFixed(0)}';
-                });
-              },
+          ],
+        ),
+        const SizedBox(height: 10),
+        Row(
+          children: [
+            Padding(
+              padding: const EdgeInsets.fromLTRB(10, 10, 0, 0),
+              child: Text('IMDB Rate :   $imdbRate',
+                  style: Theme.of(context).textTheme.bodyMedium),
             ),
           ],
         ),
-      ),
-      Positioned(
-        right: -0.1,
-        top: -0.1,
-        child: ClipRRect(
-          borderRadius: BorderRadius.circular(10.0),
-          child: InkWell(
-            onTap: () {
-              initFilter();
-              widget.submitFilter(_searchFilter);
-              Navigator.of(context).pop();
-            },
-            child: Container(
-              color: Colors.red,
-              child: const Icon(Icons.close, color: Colors.white, size: 20),
-            ),
+        RangeSlider(
+          values: _imdbRangeValues,
+          max: 10,
+          divisions: 100,
+          activeColor: Colors.blueAccent,
+          inactiveColor: Colors.grey,
+          labels: RangeLabels(
+            _imdbRangeValues.start.toStringAsFixed(1),
+            _imdbRangeValues.end.toStringAsFixed(1),
           ),
+          onChanged: (RangeValues values) {
+            setState(() {
+              _imdbRangeValues = values;
+              imdbRate =
+                  '${_imdbRangeValues.start.toStringAsFixed(1)}  -  ${_imdbRangeValues.end.toStringAsFixed(1)}';
+            });
+          },
         ),
-      ),
-    ]);
+        Row(
+          children: [
+            Padding(
+              padding: const EdgeInsets.fromLTRB(10, 10, 0, 0),
+              child: Text('Anime Rate :   $malRate',
+                  style: Theme.of(context).textTheme.bodyMedium),
+            ),
+          ],
+        ),
+        RangeSlider(
+          values: _malRangeValues,
+          max: 10,
+          divisions: 100,
+          activeColor: Colors.blueAccent,
+          inactiveColor: Colors.grey,
+          labels: RangeLabels(
+            _malRangeValues.start.toStringAsFixed(1),
+            _malRangeValues.end.toStringAsFixed(1),
+          ),
+          onChanged: (RangeValues values) {
+            setState(() {
+              _malRangeValues = values;
+              malRate =
+                  '${_malRangeValues.start.toStringAsFixed(1)}  -  ${_malRangeValues.end.toStringAsFixed(1)}';
+            });
+          },
+        ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: [
+            Row(
+              children: [
+                SizedBox(
+                  width: 20,
+                  child: Checkbox(
+                    value: censored,
+                    onChanged: (value) => setState(() => censored = value!),
+                    activeColor: active,
+                  ),
+                ),
+                const SizedBox(width: 5),
+                Text('Censored', style: Theme.of(context).textTheme.bodyMedium),
+              ],
+            ),
+            Row(
+              children: [
+                SizedBox(
+                  width: 20,
+                  child: Checkbox(
+                    value: dubbed,
+                    onChanged: (value) => setState(() => dubbed = value!),
+                    activeColor: active,
+                  ),
+                ),
+                const SizedBox(width: 5),
+                Text('Dubbed', style: Theme.of(context).textTheme.bodyMedium),
+              ],
+            ),
+            Row(
+              children: [
+                SizedBox(
+                  width: 20,
+                  child: Checkbox(
+                    value: subTitle,
+                    onChanged: (value) => setState(() => subTitle = value!),
+                    activeColor: active,
+                  ),
+                ),
+                const SizedBox(width: 5),
+                Text('Subtitle', style: Theme.of(context).textTheme.bodyMedium),
+              ],
+            ),
+          ],
+        ),
+        Row(
+          children: [
+            Padding(
+              padding: const EdgeInsets.fromLTRB(10, 10, 0, 0),
+              child: Text('Year :   $yearRate',
+                  style: Theme.of(context).textTheme.bodyMedium),
+            ),
+          ],
+        ),
+        RangeSlider(
+          min: 1980,
+          max: 2022,
+          values: yearRangeValues,
+          activeColor: Colors.blueAccent,
+          inactiveColor: Colors.grey,
+          labels: RangeLabels(
+            yearRangeValues.start.toString(),
+            yearRangeValues.end.toString(),
+          ),
+          onChanged: (RangeValues values) {
+            setState(() {
+              yearRangeValues = values;
+              yearRate =
+                  '${yearRangeValues.start.toStringAsFixed(0)}  -  ${yearRangeValues.end.toStringAsFixed(0)}';
+            });
+          },
+        ),
+      ],
+    );
   }
 }

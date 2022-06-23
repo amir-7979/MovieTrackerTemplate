@@ -1,5 +1,7 @@
 import 'package:app04/screens/bookmark/bookmark_screen.dart';
 import 'package:app04/screens/home/home_screen.dart';
+import 'package:app04/screens/search/search_screen.dart';
+import 'package:app04/screens/staff/staff_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:convex_bottom_bar/convex_bottom_bar.dart';
 import 'package:flutter/services.dart';
@@ -13,8 +15,9 @@ const _kPages = <String, IconData>{
   'genre': Icons.category,
   'bookmark': Icons.bookmark,
   'home': Icons.home,
+  'search': Icons.search,
+  'staff': Icons.person,
   'favorite': Icons.favorite,
-  'profile': Icons.person,
 
 };
 
@@ -32,10 +35,9 @@ class _StartScreenState extends State<StartScreen> {
 
   @override
   Widget build(BuildContext context) {
-    //SystemChrome.setEnabledSystemUIMode (SystemUiMode.manual, overlays: [SystemUiOverlay.bottom]);
     return DefaultTabController(
-      length: 5,
-      initialIndex: 2,
+      length: 6,
+      initialIndex: 3,
       child: Scaffold(
         backgroundColor: color4,
         body: (activeConnection == false) ? const InternetAlertDialogWidget() : Column(
@@ -46,8 +48,9 @@ class _StartScreenState extends State<StartScreen> {
                   const GenresScreen(),
                   const BookMarkScreen(),
                   HomeScreen(),
+                  SearchScreen(),
+                  StaffScreen(),
                   const FavoriteScreen(),
-                  const ProfileScreen(),
                 ],
               ),
             ),

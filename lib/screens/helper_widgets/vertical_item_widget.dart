@@ -22,7 +22,7 @@ class VerticalItemWidget extends StatelessWidget {
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(10),
         ),
-        elevation: 7,
+        elevation: 6,
         child: Row(
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
@@ -37,33 +37,34 @@ class VerticalItemWidget extends StatelessWidget {
                 ),
               ),
             ),
-            Container(width: 10),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                SizedBox(width: MediaQuery.of(context).size.width -200,
-                    child: Text(_itemModel.title, overflow: TextOverflow.ellipsis, textAlign: TextAlign.start, style: const TextStyle(fontSize: 17),)),
-                const SizedBox(height: 25),
-                Text("year : "+ _itemModel.year.toString(), textAlign: TextAlign.left, style: const TextStyle(fontSize: 15)),
-                Row(
-                  children: [
-                    SizedBox(width: 45, height: 30,
-                        child: Image.asset('assets/images/imdb.jpg')
-                    ),
-                    Text(" : ${_itemModel.rating.imdb.toString()}", style: const TextStyle(fontSize: 15),),
-                  ],
-                ),
-                Row(
-                  children: [
-                    const Padding(
-                      padding: EdgeInsets.fromLTRB(0, 0, 5, 0),
-                      child: Icon(Icons.circle, size: 15,color: Colors.redAccent,),
-                    ),
-                    Text(_itemModel.type, textAlign: TextAlign.start, style: const TextStyle(fontSize: 17),)
-                  ],
-                ),
-              ],
+            const SizedBox(width: 10),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Text(_itemModel.title, overflow: TextOverflow.ellipsis, textAlign: TextAlign.start, style: const TextStyle(fontSize: 17),),
+                  const SizedBox(height: 25),
+                  Text("year : "+ _itemModel.year.toString(), textAlign: TextAlign.left, style: const TextStyle(fontSize: 15)),
+                  Row(
+                    children: [
+                      SizedBox(width: 45, height: 30,
+                          child: Image.asset('assets/images/imdb.jpg')
+                      ),
+                      Text(" : ${_itemModel.rating.imdb.toString()}", style: const TextStyle(fontSize: 15),),
+                    ],
+                  ),
+                  Row(
+                    children: [
+                      const Padding(
+                        padding: EdgeInsets.fromLTRB(0, 0, 5, 0),
+                        child: Icon(Icons.circle, size: 15,color: Colors.redAccent,),
+                      ),
+                      Text(_itemModel.type, textAlign: TextAlign.start, style: const TextStyle(fontSize: 17),)
+                    ],
+                  ),
+                ],
+              ),
             ),
           ],
         ),

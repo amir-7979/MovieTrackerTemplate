@@ -7,7 +7,7 @@ import '../../utilities/cache_image.dart';
 class HorizontalItemWidget extends StatelessWidget {
   final LowDataItem _itemModel;
 
-  HorizontalItemWidget(this._itemModel);
+  const HorizontalItemWidget(this._itemModel, {Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

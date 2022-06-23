@@ -15,7 +15,7 @@ class MovieInfoModel {
   String? updateDate;
   String? apiUpdateDate;
   String? castUpdateDate;
-  List<Posters>? posters;
+  List<Poster>? posters;
   PosterS3? posterS3;
   dynamic trailerS3;
   Summary? summary;
@@ -55,9 +55,8 @@ class MovieInfoModel {
   List<ActorsAndCharacters>? actorsAndCharacters;
   Staff? staff;
   List<Qualities>? qualities;
-  int? dislikesCount;
-  int? likesCount;
-  String? likeOrDislike;
+  UserStats? userStats;
+
 
   @override
   String toString() {
@@ -119,9 +118,7 @@ class MovieInfoModel {
     this.actorsAndCharacters,
     this.staff,
     this.qualities,
-    this.dislikesCount,
-    this.likesCount,
-    this.likeOrDislike,
+    this.userStats,
   });
 
   MovieInfoModel.fromJson(Map<String, dynamic> json) {
@@ -140,7 +137,7 @@ class MovieInfoModel {
       apiUpdateDate = json['apiUpdateDate'].toString();
       castUpdateDate = json['castUpdateDate'].toString();
       posters = (json['posters'] as List?)?.map((dynamic e) =>
-          Posters.fromJson(e as Map<String, dynamic>)).toList();
+          Poster.fromJson(e as Map<String, dynamic>)).toList();
       posterS3 =
       (json['poster_s3'] as Map<String, dynamic>?) != null ? PosterS3.fromJson(
           json['poster_s3'] as Map<String, dynamic>) : null;
@@ -196,8 +193,8 @@ class MovieInfoModel {
           json['staff'] as Map<String, dynamic>) : null;
       qualities = (json['qualities'] as List?)?.map((dynamic e) =>
           Qualities.fromJson(e as Map<String, dynamic>)).toList();
-      dislikesCount = json['dislikesCount'] as int?;
-      likesCount = json['likesCount'] as int?;
-      likeOrDislike = json['likeOrDislike'] as String?;
+      userStats = UserStats.fromJson(json['userStats']);
+
+
   }
 }

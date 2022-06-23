@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 class SearchFieldWidget extends StatefulWidget {
   final Function submitName;
 
-  SearchFieldWidget(this.submitName);
+  const SearchFieldWidget(this.submitName, {Key? key}) : super(key: key);
 
   @override
   State<SearchFieldWidget> createState() => _SearchFieldWidgetState();
@@ -21,8 +21,7 @@ class _SearchFieldWidgetState extends State<SearchFieldWidget> {
   }
 
   @override
-  Widget build(BuildContext context) {
-    return Expanded(
+  Widget build(BuildContext context) => Expanded(
       child: SizedBox(
         height: 50,
         child: Container(
@@ -82,5 +81,4 @@ class _SearchFieldWidgetState extends State<SearchFieldWidget> {
         ),
       ),
     );
-  }
 }

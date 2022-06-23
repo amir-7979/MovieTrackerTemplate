@@ -1,4 +1,4 @@
-import 'package:app04/screens/helper_widgets/trailer_widget_widget.dart';
+import 'package:app04/screens/helper_widgets/trailer_part_widget.dart';
 import 'package:flutter/material.dart';
 import '../../utilities/cache_image.dart';
 
@@ -21,7 +21,7 @@ class ShortTrailerItemWidget extends StatelessWidget {
                   context: context,
                   useSafeArea: false,
                   barrierDismissible: false,
-                  builder: (BuildContext context) => TrailerWidget(trailerUrl ?? ''));
+                  builder: (BuildContext context) => TrailerPartWidget(trailerUrl ?? ''));
           },
           child: Column(
             children: [
@@ -30,7 +30,10 @@ class ShortTrailerItemWidget extends StatelessWidget {
                   SizedBox(
                     height: 150,
                     width: width,
-                    child: FittedBox(
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(5.0),
+
+                      child:FittedBox(
                       child: (imageUrl != null && imageUrl != '')
                           ? CacheImage(imageUrl)
                           : const Padding(
@@ -39,6 +42,7 @@ class ShortTrailerItemWidget extends StatelessWidget {
                             ),
                       fit: BoxFit.fill,
                     ),
+                  ),
                   ),
                   SizedBox(
                     height: 150,

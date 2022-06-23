@@ -1,4 +1,3 @@
-import 'package:app04/screens/helper_widgets/title_button_widget.dart';
 import 'package:app04/utilities/http_helper.dart';
 import 'package:flutter/material.dart';
 import '../../models/trailer_model.dart';
@@ -7,14 +6,14 @@ import '../helper_widgets/horizontal_shimmer.dart';
 import '../helper_widgets/trailer_item_widget.dart';
 import '../more/more_screen.dart';
 
-class ThirdPartWidget extends StatefulWidget {
-  const ThirdPartWidget({Key? key}) : super(key: key);
+class TrailerPart extends StatefulWidget {
+  const TrailerPart({Key? key}) : super(key: key);
 
   @override
-  _ThirdPartWidgetState createState() => _ThirdPartWidgetState();
+  _TrailerPartState createState() => _TrailerPartState();
 }
 
-class _ThirdPartWidgetState extends State<ThirdPartWidget> {
+class _TrailerPartState extends State<TrailerPart> {
 
   @override
   Widget build(BuildContext context) {
@@ -27,16 +26,15 @@ class _ThirdPartWidgetState extends State<ThirdPartWidget> {
             Text('Trailers', style: Theme.of(context).textTheme.headline2),
             IconButton(icon: const Icon(Icons.grid_view, size: 20, color: yellow1), onPressed: () =>
               Navigator.of(context)
-                  .pushNamed(MoreScreen.routeName, arguments: "trailers"),),
+                  .pushNamed(MoreScreen.routeName, arguments: {'argName': "trailers", 'function': getMoreMovie}),),
         ],),
         SizedBox(
-          height: 200,
+          height: 220,
           child: FutureBuilder(
               future: getThirdPartItems(),
               builder: (context, AsyncSnapshot snapshot) => (snapshot.hasData) ? trailerList(snapshot.data) : HorizontalShimmerListWidget()
               ),
         ),
-        Container(height: 10),
       ],
     );
   }

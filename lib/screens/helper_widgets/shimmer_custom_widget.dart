@@ -1,5 +1,3 @@
-import 'dart:ui';
-
 import 'package:flutter/material.dart';
 import 'package:shimmer/shimmer.dart';
 
@@ -9,26 +7,26 @@ class CustomWidget extends StatelessWidget {
   final double height;
   final ShapeBorder shapeBorder;
 
-  const CustomWidget.rectangular({
+   const CustomWidget.rectangular({Key? key,
     required this.width,
     required this.height
-  }): this.shapeBorder = const RoundedRectangleBorder();
+  }): shapeBorder = const RoundedRectangleBorder(), super(key: key);
 
-  const CustomWidget.circular({
+   const CustomWidget.circular({Key? key,
     required this.width,
     required this.height,
     this.shapeBorder = const CircleBorder()
-  });
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context)  => Shimmer.fromColors(
-    baseColor: Colors.grey,
-    highlightColor: Colors.grey[300]!,
+    baseColor: const Color(0xff4b4b4b),
+    highlightColor: const Color(0xff757575),
     child: Container(
       width: width,
       height: height,
       decoration: ShapeDecoration(
-        color: Colors.grey[400]!,
+        color: const Color(0xff646464),
         shape: shapeBorder,
       ),
     ),

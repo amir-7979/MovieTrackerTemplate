@@ -1,4 +1,146 @@
-class Rank {
+class Staff {
+  String? sId;
+  String? name;
+  String? rawName;
+  String? gender;
+  String? about;
+  int? tvmazePersonID;
+  int? jikanPersonID;
+  String? country;
+  String? birthday;
+  String? deathday;
+  Poster? imageData;
+  List<String>? originalImages;
+  List<Credits>? credits = [];
+  bool? updateFlag;
+  int? dislikesCount;
+  int? likesCount;
+  UserStats? userStats;
+
+  Staff({this.sId,
+    this.name,
+    this.rawName,
+    this.gender,
+    this.about,
+    this.tvmazePersonID,
+    this.jikanPersonID,
+    this.country,
+    this.birthday,
+    this.deathday,
+    this.imageData,
+    this.originalImages,
+    this.credits,
+    this.updateFlag,
+    this.dislikesCount,
+    this.likesCount,
+    this.userStats});
+
+  Staff.fromJson(Map<String, dynamic> json) {
+    sId = json['_id'];
+    name = json['name'];
+    rawName = json['rawName'];
+    gender = json['gender'];
+    about = json['about'];
+    tvmazePersonID = json['tvmazePersonID'];
+    jikanPersonID = json['jikanPersonID'];
+    country = json['country'];
+    birthday = json['birthday'];
+    deathday = json['deathday'];
+    imageData = json['imageData'] != null
+        ? Poster.fromJson(json['imageData'])
+        : null;
+    originalImages = json['originalImages'] != null ? List<String>.from(json['originalImages']) : null;
+    if (json['credits'] != null) {
+      json['credits'].forEach((v) {
+        credits!.add(Credits.fromJson(v));
+      });
+    }
+    updateFlag = json['updateFlag'];
+    dislikesCount = json['dislikesCount'];
+    likesCount = json['likesCount'];
+    userStats = json['userStats'] != null
+        ? UserStats.fromJson(json['userStats'])
+        : null;
+  }
+}
+
+class Credits {
+  String? movieID;
+  String? movieName;
+  String? moviePoster;
+  List<String>? positions;
+  String? characterID;
+  String? characterName;
+  String? characterRole;
+  String? characterImage;
+
+  Credits(
+      {this.movieID,
+        this.movieName,
+        this.moviePoster,
+        this.positions,
+        this.characterID,
+        this.characterName,
+        this.characterRole,
+        this.characterImage});
+
+  Credits.fromJson(Map<String, dynamic> json) {
+    movieID = json['movieID'];
+    movieName = json['movieName'];
+    moviePoster = json['moviePoster'];
+    positions = json['positions'].cast<String>();
+    characterID = json['characterID'];
+    characterName = json['characterName'];
+    characterRole = json['characterRole'];
+    characterImage = json['characterImage'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['movieID'] = this.movieID;
+    data['movieName'] = this.movieName;
+    data['moviePoster'] = this.moviePoster;
+    data['positions'] = this.positions;
+    data['characterID'] = this.characterID;
+    data['characterName'] = this.characterName;
+    data['characterRole'] = this.characterRole;
+    data['characterImage'] = this.characterImage;
+    return data;
+  }
+}
+
+class UserStats {
+  bool? likeMovie;
+  bool? dislikeMovie;
+  bool? save;
+  bool? futureList;
+  int? likeMovieCount;
+  int? dislikeMovieCount;
+  int? saveCount;
+  int? futureListCount;
+
+  UserStats({this.likeMovie,
+    this.dislikeMovie,
+    this.save,
+    this.futureList,
+    this.likeMovieCount,
+    this.dislikeMovieCount,
+    this.saveCount,
+    this.futureListCount});
+
+  UserStats.fromJson(Map<String, dynamic> json) {
+    likeMovie = json['like_movie'];
+    dislikeMovie = json['dislike_movie'];
+    save = json['save'];
+    futureList = json['future_list'];
+    likeMovieCount = json['like_movie_count'];
+    dislikeMovieCount = json['dislike_movie_count'];
+    saveCount = json['save_count'];
+    futureListCount = json['future_list_count'];
+  }
+}
+
+  class Rank {
   int? animeTopComingSoon;
   int? animeTopAiring;
   int? comingSoon;
@@ -154,18 +296,18 @@ class Qualities {
 }
 
 
-class Posters {
+class Poster {
   String? url;
   String? info;
   int? size;
 
-  Posters({
+  Poster({
     this.url,
     this.info,
     this.size,
   });
 
-  Posters.fromJson(Map<String, dynamic> json) {
+  Poster.fromJson(Map<String, dynamic> json) {
     url = json['url'] as String?;
     info = json['info'] as String?;
     size = json['size'] as int?;
@@ -340,23 +482,6 @@ class CharacterData {
   }
 }
 
-class Staff {
-  List<dynamic>? directors;
-  List<Writers>? writers;
-  List<dynamic>? others;
-
-  Staff({
-    this.directors,
-    this.writers,
-    this.others,
-  });
-
-  Staff.fromJson(Map<String, dynamic> json) {
-    directors = json['directors'] as List?;
-    writers = (json['writers'] as List?)?.map((dynamic e) => Writers.fromJson(e as Map<String,dynamic>)).toList();
-    others = json['others'] as List?;
-  }
-}
 
 class Writers {
   String? name;

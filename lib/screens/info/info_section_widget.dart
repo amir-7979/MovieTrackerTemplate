@@ -1,17 +1,18 @@
 import 'package:app04/screens/info/part.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
+import 'package:share_plus/share_plus.dart';
 import '../../icons/my_flutter_app_icons.dart';
 import '../../utilities/cache_image.dart';
 import '../../utilities/consts.dart';
+import '../../utilities/function_helper.dart';
 import '../../utilities/http_helper.dart';
-import '../helper_widgets/trailer_widget_widget.dart';
+import '../helper_widgets/trailer_part_widget.dart';
 
 class InfoSectionWidget extends StatefulWidget {
   final dynamic _infoModel;
+  final Function _function;
 
-  const InfoSectionWidget(this._infoModel, {Key? key}) : super(key: key);
+  InfoSectionWidget(this._infoModel, this._function);
 
   @override
   State<InfoSectionWidget> createState() => _InfoSectionWidgetState();
@@ -19,13 +20,10 @@ class InfoSectionWidget extends StatefulWidget {
 
 class _InfoSectionWidgetState extends State<InfoSectionWidget> {
   bool summery = true;
-  bool isReadmore = false;
-
-  bool bookmark = false;
+  bool isReadMore = false;
 
   @override
   Widget build(BuildContext context) {
-    print('like : ${widget._infoModel.likeOrDislike}');
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -38,11 +36,31 @@ class _InfoSectionWidgetState extends State<InfoSectionWidget> {
                 SizedBox(
                   width: screenWidth,
                   height: screenWidth,
-                  child: FittedBox(
-                    child: CacheImage(
-                        widget._infoModel.posters.isNotEmpty ? widget._infoModel
-                            .posters[0].url : 'assets/images/no_image.jpg'),
-                    fit: BoxFit.fill,
+                  child: InkWell(
+                    onDoubleTap: () async {
+                      setState(() {
+                        like(
+                            widget._infoModel.userStats.likeMovie,
+                            widget._infoModel.userStats.dislikeMovie,
+                            widget._infoModel.userStats.likeMovieCount,
+                            widget._infoModel.userStats.dislikeMovieCount);
+                      });
+                      int res = await likeOrDislike(
+                          'like_movie',
+                          widget._infoModel.id!,
+                          (widget._infoModel.userStats.likeMovie)
+                              ? false
+                              : true);
+                      if (res == 200) {
+                        setState(() {});
+                      }
+                    },
+                    child: FittedBox(
+                      child: CacheImage(widget._infoModel.posters.isNotEmpty
+                          ? widget._infoModel.posters[0].url
+                          : 'assets/images/no_image.jpg'),
+                      fit: BoxFit.fill,
+                    ),
                   ),
                 ),
                 Container(
@@ -66,111 +84,100 @@ class _InfoSectionWidgetState extends State<InfoSectionWidget> {
                             splashRadius: 0.1,
                             onPressed: () async {
                               setState(() {
-                                if (widget._infoModel.likeOrDislike == 'like') {
-                                  widget._infoModel.likeOrDislike = '';
-                                  widget._infoModel.likesCount--;
-                                } else if (widget._infoModel.likeOrDislike ==
-                                    'dislike') {
-                                  widget._infoModel.likeOrDislike = 'like';
-                                  widget._infoModel.likesCount++;
-                                  widget._infoModel.dislikesCount--;
-                                } else {
-                                  widget._infoModel.likeOrDislike = 'like';
-                                  widget._infoModel.likesCount++;
-                                }
+                                like(
+                                    widget._infoModel.userStats.likeMovie,
+                                    widget._infoModel.userStats.dislikeMovie,
+                                    widget._infoModel.userStats.likeMovieCount,
+                                    widget._infoModel.userStats
+                                        .dislikeMovieCount);
                               });
-                              int res = await likeOrDislikeMovie(
-                                  'like',
+                              int res = await likeOrDislike(
+                                  'like_movie',
                                   widget._infoModel.id!,
-                                  (widget._infoModel.likeOrDislike == 'like')
+                                  (widget._infoModel.userStats.likeMovie)
                                       ? false
                                       : true);
                               if (res == 200) {
                                 setState(() {});
-                              } else {
-                                Fluttertoast.showToast(
-                                    msg: "No Connection !",
-                                    toastLength: Toast.LENGTH_LONG,
-                                    gravity: ToastGravity.BOTTOM,
-                                    timeInSecForIosWeb: 1,
-                                    backgroundColor: Colors.red,
-                                    textColor: Colors.white,
-                                    fontSize: 14.0
-                                );
                               }
-
                             },
                             icon: Icon(
                               MyFlutterApp.thumbs_up,
-                              color: (widget._infoModel.likeOrDislike == 'like')
+                              color: (widget._infoModel.userStats.likeMovie)
                                   ? Colors.green
                                   : Colors.grey,
                             )),
                         Text(
-                            '${widget._infoModel.likesCount
-                                .toString()}  -  ${widget._infoModel
-                                .dislikesCount.toString()}'),
+                            '${widget._infoModel.userStats.likeMovieCount.toString()}  -  ${widget._infoModel.userStats.dislikeMovieCount.toString()}'),
                         IconButton(
                             splashRadius: 0.1,
                             onPressed: () async {
                               setState(() {
-                                if (widget._infoModel.likeOrDislike ==
-                                    'dislike') {
-                                  widget._infoModel.likeOrDislike = '';
-                                  widget._infoModel.dislikesCount--;
-                                } else if (widget._infoModel.likeOrDislike ==
-                                    'like') {
-                                  widget._infoModel.likeOrDislike = 'dislike';
-                                  widget._infoModel.dislikesCount++;
-                                  widget._infoModel.likesCount--;
-                                } else {
-                                  widget._infoModel.likeOrDislike = 'dislike';
-                                  widget._infoModel.dislikesCount++;
-                                }
+                                like(
+                                    widget._infoModel.userStats.dislikeMovie,
+                                    widget._infoModel.userStats.likeMovie,
+                                    widget
+                                        ._infoModel.userStats.dislikeMovieCount,
+                                    widget._infoModel.userStats.likeMovieCount);
                               });
-                              int res = await likeOrDislikeMovie(
-                                  'dislike',
+                              int res = await likeOrDislike(
+                                  'dislike_movie',
                                   widget._infoModel.id!,
-                                  (widget._infoModel.likeOrDislike == 'dislike')
+                                  (widget._infoModel.userStats.dislikeMovie)
                                       ? false
                                       : true);
                               if (res == 200) {
                                 setState(() {});
-                              } else {
-                                Fluttertoast.showToast(
-                                    msg: "No Connection !",
-                                    toastLength: Toast.LENGTH_LONG,
-                                    gravity: ToastGravity.BOTTOM,
-                                    timeInSecForIosWeb: 1,
-                                    backgroundColor: Colors.red,
-                                    textColor: Colors.white,
-                                    fontSize: 14.0
-                                );
                               }
                             },
                             icon: Padding(
                               padding: const EdgeInsets.fromLTRB(0, 7, 0, 0),
                               child: Icon(
                                 MyFlutterApp.thumbs_down,
-                                color: (widget._infoModel.likeOrDislike ==
-                                    'dislike')
-                                    ? Colors.red
-                                    : Colors.grey,
+                                color:
+                                    (widget._infoModel.userStats.dislikeMovie)
+                                        ? Colors.red
+                                        : Colors.grey,
                               ),
                             )),
                       ],
                     ),
                     IconButton(
                         splashRadius: 0.1,
-                        onPressed: () => setState(() => bookmark = !bookmark),
+                        onPressed: () async {
+                          setState(() => widget._infoModel.userStats.save =
+                              !widget._infoModel.userStats.save);
+                          int res = await likeOrDislike(
+                              'save',
+                              widget._infoModel.id!,
+                              (widget._infoModel.userStats.save)
+                                  ? false
+                                  : true);
+                          if (res == 200) {
+                            setState(() {});
+                          }
+                        },
                         icon: Icon(
                           Icons.bookmark,
-                          color: (bookmark) ? Colors.blue : Colors.grey,
+                          color: (widget._infoModel.userStats.save)
+                              ? Colors.blue
+                              : Colors.grey,
                         )),
                     IconButton(
                       splashRadius: 0.1,
-
                       onPressed: () {},
+                      icon: const Icon(
+                        Icons.play_arrow,
+                        color: Colors.grey,
+                      ),
+                    ),
+                    IconButton(
+                      splashRadius: 0.1,
+                      onPressed: () => Share.share(
+                          widget._infoModel.posters.isNotEmpty
+                              ? widget._infoModel.posters[0].url
+                              : '',
+                          subject: widget._infoModel.title),
                       icon: const Icon(
                         Icons.share_outlined,
                         color: Colors.grey,
@@ -178,18 +185,11 @@ class _InfoSectionWidgetState extends State<InfoSectionWidget> {
                     ),
                     IconButton(
                       splashRadius: 0.1,
-
-                      onPressed: () {},
+                      onPressed: () {
+                        widget._function();
+                      },
                       icon: const Icon(
                         Icons.download_outlined,
-                        color: Colors.grey,
-                      ),
-                    ),
-                    IconButton(
-                      splashRadius: 0.1,
-                      onPressed: () {},
-                      icon: const Icon(
-                        Icons.play_arrow,
                         color: Colors.grey,
                       ),
                     ),
@@ -209,72 +209,79 @@ class _InfoSectionWidgetState extends State<InfoSectionWidget> {
         ),
 
         SizedBox(
-          width: screenWidth,
           height: 25,
           child: ListView(scrollDirection: Axis.horizontal, children: [
             Text(
               widget._infoModel.type,
               style: const TextStyle(fontSize: 18),
             ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 10),
-              child: Container(
-                width: 1,
-                height: 20,
-                color: Colors.white,
-              ),
-            ),
-            Text(
-              widget._infoModel.year,
-              style: const TextStyle(fontSize: 18),
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 10),
-              child: Container(
-                width: 1,
-                height: 20,
-                color: Colors.white,
-              ),
-            ),
-            Text(
-              widget._infoModel.rated,
-              style: const TextStyle(fontSize: 18),
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 10),
-              child: Container(
-                width: 1,
-                height: 20,
-                color: Colors.white,
-              ),
-            ),
-            Text(
-              widget._infoModel.duration.toString(),
-              style: const TextStyle(fontSize: 18),
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 10),
-              child: Container(
-                width: 1,
-                height: 20,
-                color: Colors.white,
-              ),
-            ),
-            Row(
-              children: [
-                SizedBox(
-                    width: 45,
-                    height: 30,
-                    child: Image.asset('assets/images/imdb.jpg')),
-                Padding(
-                  padding: const EdgeInsets.only(left: 5),
-                  child: Text(
-                    widget._infoModel.rating.imdb.toString(),
-                    style: const TextStyle(fontSize: 18),
-                  ),
+            if (widget._infoModel.year != null)
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 7),
+                child: Container(
+                  width: 1,
+                  height: 20,
+                  color: Colors.white,
                 ),
-              ],
-            ),
+              ),
+            if (widget._infoModel.year != null)
+              Text(
+                widget._infoModel.year,
+                style: const TextStyle(fontSize: 18),
+              ),
+            if (widget._infoModel.duration != null)
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 7),
+                child: Container(
+                  width: 1,
+                  height: 20,
+                  color: Colors.white,
+                ),
+              ),
+            if (widget._infoModel.duration != null)
+              Text(
+                widget._infoModel.duration.toString(),
+                style: const TextStyle(fontSize: 18),
+              ),
+            if (widget._infoModel.rating.imdb != null)
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 7),
+                child: Container(
+                  width: 1,
+                  height: 20,
+                  color: Colors.white,
+                ),
+              ),
+            if (widget._infoModel.rating.imdb != null)
+              Row(
+                children: [
+                  SizedBox(
+                      width: 45,
+                      height: 30,
+                      child: Image.asset('assets/images/imdb.jpg')),
+                  Padding(
+                    padding: const EdgeInsets.only(left: 5),
+                    child: Text(
+                      widget._infoModel.rating.imdb.toString(),
+                      style: const TextStyle(fontSize: 18),
+                    ),
+                  ),
+                ],
+              ),
+            if (widget._infoModel.rated != null)
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 7),
+                child: Container(
+                  width: 1,
+                  height: 20,
+                  color: Colors.white,
+                ),
+              ),
+            if (widget._infoModel.rated != null)
+              Text(
+                widget._infoModel.rated,
+                style: const TextStyle(fontSize: 18),
+              ),
           ]),
         ),
 
@@ -289,19 +296,19 @@ class _InfoSectionWidgetState extends State<InfoSectionWidget> {
             ),
             (widget._infoModel.trailers != null)
                 ? ((widget._infoModel.trailers[0].url != null)
-                ? TextButton(
-              onPressed: () async {
-                showDialog(
-                    context: context,
-                    useSafeArea: false,
-                    barrierDismissible: false,
-                    builder: (BuildContext context) =>
-                        TrailerWidget(
-                            widget._infoModel.trailers[0].url));
-              },
-              child: const Text('watch trailer'),
-            )
-                : const SizedBox(height: 50))
+                    ? TextButton(
+                        onPressed: () async {
+                          showDialog(
+                              context: context,
+                              useSafeArea: false,
+                              barrierDismissible: false,
+                              builder: (BuildContext context) =>
+                                  TrailerPartWidget(
+                                      widget._infoModel.trailers[0].url));
+                        },
+                        child: const Text('watch trailer'),
+                      )
+                    : const SizedBox(height: 50))
                 : const SizedBox(height: 50),
           ],
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -324,10 +331,10 @@ class _InfoSectionWidgetState extends State<InfoSectionWidget> {
               onPressed: () {
                 setState(() {
                   // toggle the bool variable true or false
-                  isReadmore = !isReadmore;
+                  isReadMore = !isReadMore;
                 });
               },
-              child: Text((isReadmore ? 'Read Less' : 'Read More'))),
+              child: Text((isReadMore ? 'Read Less' : 'Read More'))),
         ),
         const SizedBox(height: 20),
 
@@ -349,9 +356,7 @@ class _InfoSectionWidgetState extends State<InfoSectionWidget> {
             "Genre",
             widget._infoModel.genres
                 .toString()
-                .substring(1, widget._infoModel.genres
-                .toString()
-                .length - 1)),
+                .substring(1, widget._infoModel.genres.toString().length - 1)),
 
         const SizedBox(height: 10),
 
@@ -366,8 +371,6 @@ class _InfoSectionWidgetState extends State<InfoSectionWidget> {
 
         Part("Dubbed", widget._infoModel.latestData?.dubbed),
 
-        const SizedBox(height: 10),
-
         const Text('Download',
             style: TextStyle(color: Colors.red, fontSize: 20.0)),
       ],
@@ -377,13 +380,13 @@ class _InfoSectionWidgetState extends State<InfoSectionWidget> {
   Widget buildText(String text) {
     // if read more is false then show only 3 lines from text
     // else show full text
-    final lines = isReadmore ? null : 5;
+    final lines = isReadMore ? null : 5;
     return Text(
       text,
       maxLines: lines,
       // overflow properties is used to show 3 dot in text widget
       // so that user can understand there are few more line to read.
-      overflow: isReadmore ? TextOverflow.visible : TextOverflow.ellipsis,
+      overflow: isReadMore ? TextOverflow.visible : TextOverflow.ellipsis,
     );
   }
 }

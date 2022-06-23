@@ -31,17 +31,28 @@ class HorizontalShimmer extends StatelessWidget {
   }
 
 }
-Widget HorizontalShimmerListWidget() {
-  return  SizedBox(
-    height: 220,
-    child: ListView(
-      scrollDirection: Axis.horizontal,
-      children: [
-        HorizontalShimmer(),
-        HorizontalShimmer(),
-        HorizontalShimmer(),
-      ],
-    ),
+Widget HorizontalShimmerListWidget({BuildContext? context, String? name}) {
+  return  Column(
+    mainAxisAlignment: MainAxisAlignment.start,
+    crossAxisAlignment: CrossAxisAlignment.start,
+    children: [
+      if(name != null)Text(name, style: Theme.of(context!).textTheme.headline2),
+      if(name != null)const SizedBox(height: 10),
+      SizedBox(
+        height: 220,
+        child: ListView(
+          scrollDirection: Axis.horizontal,
+          children: [
+            HorizontalShimmer(),
+            HorizontalShimmer(),
+            HorizontalShimmer(),
+            HorizontalShimmer(),
+            HorizontalShimmer(),
+            HorizontalShimmer(),
+          ],
+        ),
+      ),
+    ],
   );
 }
 

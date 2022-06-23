@@ -1,14 +1,17 @@
 import 'package:app04/utilities/http_helper.dart';
 import 'package:flutter/material.dart';
+import '../../utilities/consts.dart';
 import '../helper_widgets/horizontal_shimmer.dart';
 import '../helper_widgets/show-part-widget.dart';
+import '../more/more_screen.dart';
+import '../time_line/time_line_vertical.dart';
 
-class SecondPartWidget extends StatefulWidget {
+class TimeLinePartWidget extends StatefulWidget {
   @override
-  _SecondPartWidgetState createState() => _SecondPartWidgetState();
+  _TimeLinePartWidgetState createState() => _TimeLinePartWidgetState();
 }
 
-class _SecondPartWidgetState extends State<SecondPartWidget> {
+class _TimeLinePartWidgetState extends State<TimeLinePartWidget> {
   List<String> days = const [
     'sunday',
     'monday',
@@ -18,9 +21,8 @@ class _SecondPartWidgetState extends State<SecondPartWidget> {
     'friday',
     'saturday'
   ];
-  int i = 0;
+  int i = DateTime.now().weekday;
 
-  void change(int j) => setState(() => i = (i + j) % 7);
 
   @override
   Widget build(BuildContext context) {
@@ -28,31 +30,18 @@ class _SecondPartWidgetState extends State<SecondPartWidget> {
       children: [
         Row(
           children: [
-            Padding(
-              padding: const EdgeInsets.fromLTRB(5, 0, 0, 0),
-              child: Text('TimeLine', style: Theme.of(context).textTheme.headline2),
-            ),
-            Row(children: [
-              IconButton(
-                  onPressed: () => change(-1),
-                  icon: const Icon(Icons.arrow_left)),
-              Text(
-                days[i],
-                style: const TextStyle(color: Colors.white, fontSize: 19),
-              ),
-              IconButton(
-                  onPressed: () {
-                    change(1);
-                  },
-                  icon: const Icon(Icons.arrow_right)),
-            ]),
+            Text('TimeLine', style: Theme.of(context).textTheme.headline2),
+
+            IconButton(icon: const Icon(Icons.grid_view, size: 20, color: yellow1), onPressed: () =>
+                Navigator.of(context)
+                    .pushNamed(VerticalTimeLine.routeName)),
           ],
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
         ),
         SizedBox(
           height: 220,
           child: FutureBuilder(
-              future: getSecondPartItems(i),
+              future: getSecondPartItems(i, 1),
               builder: (context, AsyncSnapshot snapshot) => (snapshot.hasData) ? showPartWidget(snapshot.data) : HorizontalShimmerListWidget()),
         ),
       ],

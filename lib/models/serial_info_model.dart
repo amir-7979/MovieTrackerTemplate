@@ -21,7 +21,7 @@ class SerialInfoModel {
   String? apiUpdateDate;
   String? castUpdateDate;
   List<Seasons>? seasons;
-  List<Posters>? posters;
+  List<Poster>? posters;
   PosterS3? posterS3;
   dynamic trailerS3;
   Summary? summary;
@@ -60,9 +60,8 @@ class SerialInfoModel {
   List<ActorsAndCharacters>? actorsAndCharacters;
   Staff? staff;
   List<dynamic>? qualities;
-  int? dislikesCount;
-  int? likesCount;
-  String? likeOrDislike;
+  UserStats? userStats;
+
 
   SerialInfoModel({
     this.id,
@@ -121,9 +120,7 @@ class SerialInfoModel {
     this.actorsAndCharacters,
     this.staff,
     this.qualities,
-    this.dislikesCount,
-    this.likesCount,
-    this.likeOrDislike,
+    this.userStats,
     this.maps
   });
 
@@ -148,7 +145,7 @@ class SerialInfoModel {
     apiUpdateDate = json['apiUpdateDate'].toString();
     castUpdateDate = json['castUpdateDate'].toString();
     seasons = (json['seasons'] as List?)?.map((dynamic e) => Seasons.fromJson(e as Map<String,dynamic>)).toList();
-    posters = (json['posters'] as List?)?.map((dynamic e) => Posters.fromJson(e as Map<String,dynamic>)).toList();
+    posters = (json['posters'] as List?)?.map((dynamic e) => Poster.fromJson(e as Map<String,dynamic>)).toList();
     posterS3 = (json['poster_s3'] as Map<String,dynamic>?) != null ? PosterS3.fromJson(json['poster_s3'] as Map<String,dynamic>) : null;
     trailerS3 = json['trailer_s3'];
     summary = (json['summary'] as Map<String,dynamic>?) != null ? Summary.fromJson(json['summary'] as Map<String,dynamic>) : null;
@@ -187,9 +184,7 @@ class SerialInfoModel {
     actorsAndCharacters = (json['actorsAndCharacters'] as List?)?.map((dynamic e) => ActorsAndCharacters.fromJson(e as Map<String,dynamic>)).toList();
     staff = (json['staff'] as Map<String,dynamic>?) != null ? Staff.fromJson(json['staff'] as Map<String,dynamic>) : null;
     qualities = json['qualities'] as List?;
-    dislikesCount = json['dislikesCount'] as int?;
-    likesCount = json['likesCount'] as int?;
-    likeOrDislike = json['likeOrDislike'] as String?;
+    userStats = UserStats.fromJson(json['userStats']);
     maps = makeMap();
   }
 

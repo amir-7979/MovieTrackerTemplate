@@ -1,148 +1,113 @@
-import 'package:app04/models/low_data_item.dart';
 import 'package:app04/screens/helper_widgets/vertical_item_widget.dart';
+import 'package:app04/screens/helper_widgets/vertical_shimmer.dart';
 import 'package:flutter/material.dart';
+import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
+import '../../models/low_data_item.dart';
 
 class ScrollListWidget extends StatefulWidget {
   final Function _function;
+  int? day;
 
-  const ScrollListWidget(this._function, {Key? key}) : super(key: key);
+  ScrollListWidget(this._function, {this.day, Key? key}) : super(key: key);
 
   @override
   State<ScrollListWidget> createState() => _ScrollListWidgetState();
 }
 
 class _ScrollListWidgetState extends State<ScrollListWidget> {
-  int _page = 1;
-  bool _hasNextPage = true;
-  bool _isFirstLoadRunning = false;
-  bool _isLoadMoreRunning = false;
+  static const _pageSize = 12;
   bool _showBackToTopButton = false;
-  late ScrollController _controller;
 
-  List<LowDataItem> movies = [];
+  final PagingController<int, LowDataItem> _pagingController =
+      PagingController(firstPageKey: 1);
 
-  void _firstLoad() async {
-    setState(() {
-      _isFirstLoadRunning = true;
-    });
-    try {
-      final res = await widget._function(1);
-      setState(() {
-        movies = res ?? [];
-      });
-    } catch (err) {
-      print('Something went wrong');
-    }
-
-    setState(() {
-      _isFirstLoadRunning = false;
-    });
-  }
-
-  void _loadMore() async {
-    if (_hasNextPage == true &&
-        _isFirstLoadRunning == false &&
-        _isLoadMoreRunning == false &&
-        _controller.position.extentAfter < 300) {
-      setState(() {
-        _isLoadMoreRunning = true;
-      });
-      _page += 1;
-      try {
-        final res = await widget._function(_page);
-        final fetchedMovies = res ?? [];
-        if (fetchedMovies.isNotEmpty) {
-          setState(() {
-            movies.addAll(fetchedMovies);
-          });
-        } else {
-          setState(() {
-            _hasNextPage = false;
-          });
-        }
-      } catch (err) {
-        print('Something went wrong!');
-      }
-      setState(() {
-        _isLoadMoreRunning = false;
-      });
-    }
-  }
+  late ScrollController _scrollController = ScrollController();
 
   @override
   void initState() {
-    _controller = ScrollController()
-      ..addListener(_loadMore)
+    _pagingController.addPageRequestListener((pageKey) {
+      _fetchPage(pageKey);
+    });
+
+    _scrollController = ScrollController()
       ..addListener(() {
-        setState(() =>
-            _showBackToTopButton = (_controller.offset >= 600) ? true : false);
+        if (_showBackToTopButton == false && _scrollController.offset >= 500) {
+          setState(() {
+            _showBackToTopButton = true;
+          });
+        } else if (_showBackToTopButton == true &&
+            _scrollController.offset < 500) {
+          setState(() {
+            _showBackToTopButton = false;
+          });
+        }
       });
-    _firstLoad();
+
     super.initState();
+  }
+
+  void _scrollToTop() {
+    _scrollController.animateTo(0,
+        duration: const Duration(milliseconds: 500), curve: Curves.linear);
+  }
+
+  Future<void> _fetchPage(int pageKey) async {
+    try {
+      final newItems = await widget._function(pageKey);
+      if(newItems == null) {
+        _pagingController.appendLastPage([]);
+        return;
+      }
+      final isLastPage = newItems.length < _pageSize;
+      if (isLastPage) {
+        _pagingController.appendLastPage(newItems);
+      } else {
+        final nextPageKey = pageKey + 1;
+        _pagingController.appendPage(newItems, nextPageKey);
+      }
+    } catch (error) {
+      _pagingController.error = error;
+    }
   }
 
   @override
   void dispose() {
-    _controller.removeListener(_loadMore);
+    _pagingController.dispose();
+    _scrollController.dispose();
     super.dispose();
-  }
-
-  void _scrollToTop() {
-    _controller.animateTo(0,
-        duration: const Duration(milliseconds: 100), curve: Curves.linear);
   }
 
   @override
   Widget build(BuildContext context) {
-    return _isFirstLoadRunning
-        ? const Center(
-            child: CircularProgressIndicator(),
-          )
-        : Stack(
-            children: [
-              Column(
+    return RefreshIndicator(
+      onRefresh: () => Future.sync(() => _pagingController.refresh()),
+      child: Stack(children: [
+        PagedListView<int, LowDataItem>.separated(
+          padding: const EdgeInsets.fromLTRB(5, 5, 5, 5),
+          pagingController: _pagingController,
+          scrollController: _scrollController,
+          builderDelegate: PagedChildBuilderDelegate<LowDataItem>(
+            itemBuilder: (context, item, index) => VerticalItemWidget(item),
+            firstPageProgressIndicatorBuilder: (_) => SingleChildScrollView(
+              child: Column(
                 children: [
-                  (movies.isNotEmpty) ? Expanded(
-                    child: ListView.builder(
-                        padding: const EdgeInsets.all(5),
-                        controller: _controller,
-                        itemCount: movies.length,
-                        itemBuilder: (_, int index) {
-                          return VerticalItemWidget(movies[index]);
-                        }),
-                  ) : const SizedBox(height: 1),
-                  if (_isLoadMoreRunning == true)
-                    const Align(
-                      alignment: Alignment.bottomCenter,
-                      child: Padding(
-                        padding: EdgeInsets.fromLTRB(0, 5, 0, 8),
-                        child: SizedBox(
-                          height: 30,
-                          width: 30,
-                          child: CircularProgressIndicator(strokeWidth: 3),
-                        ),
-                      ),
-                    ),
-                ],
+                    VerticalShimmer(), VerticalShimmer(), VerticalShimmer(), VerticalShimmer(), VerticalShimmer(), VerticalShimmer(), VerticalShimmer(),
+               ],
               ),
-              if (_showBackToTopButton == false)
-                const SizedBox()
-              else
-                Align(
-                  alignment: Alignment.bottomRight,
-                  child: Padding(
-                    padding: const EdgeInsets.only(right: 15, bottom: 15),
-                    child: SizedBox(
-                      height: 50,
-                      width: 50,
-                      child: FloatingActionButton(
-                        onPressed: _scrollToTop,
-                        child: const Icon(Icons.arrow_upward),
-                      ),
-                    ),
-                  ),
-                ),
-            ],
-          );
+            ),
+          ),
+          separatorBuilder: (context, index) => const SizedBox(height: 1),
+        ),
+        if (_showBackToTopButton)
+          Padding(
+            padding: const EdgeInsets.fromLTRB(0, 0, 10, 30),
+            child: Align(
+                alignment: Alignment.bottomRight,
+                child: FloatingActionButton(
+                  onPressed: _scrollToTop,
+                  child: const Icon(Icons.arrow_upward),
+                )),
+          )
+      ]));
   }
 }

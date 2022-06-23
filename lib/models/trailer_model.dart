@@ -7,7 +7,7 @@ class TrailerModel {
   String? type;
   String? rawTitle;
   int? like;
-  List<Posters>? posters;
+  List<Poster>? posters;
   List<Trailers>? trailers;
   String? status;
   String? year;
@@ -40,7 +40,7 @@ class TrailerModel {
     type = json['type'] as String?;
     rawTitle = json['rawTitle'] as String?;
     like = json['like'] as int?;
-    posters = (json['posters'] as List?)?.map((dynamic e) => Posters.fromJson(e as Map<String,dynamic>)).toList();
+    posters = (json['posters'] as List?)?.map((dynamic e) => Poster.fromJson(e as Map<String,dynamic>)).toList();
     trailers = (json['trailers'] as List?)?.map((dynamic e) => Trailers.fromJson(e as Map<String,dynamic>)).toList();
     status = json['status'] as String?;
     year = json['year'] as String?;
