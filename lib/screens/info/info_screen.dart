@@ -5,6 +5,7 @@ import 'package:scroll_app_bar/scroll_app_bar.dart';
 import '../../utilities/cache_image.dart';
 import 'download_buttons_widget.dart';
 import 'info_section_widget.dart';
+import 'movie_download_button_widget.dart';
 
 class InfoScreen extends StatefulWidget {
   static const routeName = '/info-screen';
@@ -107,9 +108,9 @@ class _InfoScreenState extends State<InfoScreen> {
                             InfoSectionWidget(snapshot.data, _scrollDown),
                             SizedBox(key: _widgetKey, height: 1),
                             (isMovie)
-                                ? DownloadMovieWidget(snapshot.data.posters.isNotEmpty ? snapshot.data.posters[0].url : '',
+                                ? DownloadMovieSection(context, dio, snapshot.data.title, snapshot.data.info, snapshot.data.posters.isNotEmpty ? snapshot.data.posters[0].url : '',
                                     snapshot.data.qualities)
-                                : DownloadSeasonsWidget(snapshot.data),
+                                : DownloadSeasonsSection(snapshot.data),
                           ],
                         ),
                       ),

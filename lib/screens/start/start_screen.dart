@@ -1,24 +1,19 @@
 import 'package:app04/screens/bookmark/bookmark_screen.dart';
 import 'package:app04/screens/home/home_screen.dart';
 import 'package:app04/screens/search/search_screen.dart';
-import 'package:app04/screens/staff/staff_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:convex_bottom_bar/convex_bottom_bar.dart';
-import 'package:flutter/services.dart';
 import '../../utilities/consts.dart';
-import '../favorite/Favorite_screen.dart';
 import '../genre/genre_screen.dart';
 import '../helper_widgets/internet_alert_dialog_widget.dart';
 import '../profile/profile_page_screen.dart';
 
 const _kPages = <String, IconData>{
+  'setting': Icons.settings,
   'genre': Icons.category,
-  'bookmark': Icons.bookmark,
   'home': Icons.home,
+  'save': Icons.bookmark,
   'search': Icons.search,
-  'staff': Icons.person,
-  'favorite': Icons.favorite,
-
 };
 
 class StartScreen extends StatefulWidget {
@@ -29,28 +24,25 @@ class StartScreen extends StatefulWidget {
 }
 
 class _StartScreenState extends State<StartScreen> {
-
   final TabStyle _tabStyle = TabStyle.textIn;
-
 
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
-      length: 6,
-      initialIndex: 3,
+      length: 5,
+      initialIndex: 2,
       child: Scaffold(
         backgroundColor: color4,
         body: (activeConnection == false) ? const InternetAlertDialogWidget() : Column(
-          children:  [
+          children: [
             Expanded(
               child: TabBarView(
                 children: [
+                  ProfileScreen(),
                   const GenresScreen(),
-                  const BookMarkScreen(),
                   HomeScreen(),
+                  const BookMarkScreen(),
                   SearchScreen(),
-                  StaffScreen(),
-                  const FavoriteScreen(),
                 ],
               ),
             ),

@@ -7,6 +7,8 @@ class Part extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      mainAxisAlignment: MainAxisAlignment.start,
       children: [
         Text(name!+" : ", style: const TextStyle(color: Colors.cyan, fontSize: 18),),
         const SizedBox(width: 10,),

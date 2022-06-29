@@ -10,6 +10,8 @@ class CacheImage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return (imageUrl != null && imageUrl!.isNotEmpty) ? CachedNetworkImage(
+      fit: BoxFit.fill,
+      fadeInCurve: Curves.linear,
       imageUrl:  imageUrl! ,
       errorWidget: (context, url, error) => Image.asset('assets/images/no_image.jpg'),
     ) : Container();

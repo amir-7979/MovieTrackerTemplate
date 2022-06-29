@@ -1,3 +1,101 @@
+class Character {
+  String? sId;
+  String? name;
+  String? rawName;
+  String? gender;
+  String? about;
+  int? tvmazePersonID;
+  int? jikanPersonID;
+  Poster? imageData;
+  List<String>? originalImages;
+  List<CharacterCredits>? credits = [];
+  bool? updateFlag;
+  CharacterStats? characterStats;
+
+  Character({this.sId,
+    this.name,
+    this.rawName,
+    this.gender,
+    this.about,
+    this.tvmazePersonID,
+    this.jikanPersonID,
+    this.imageData,
+    this.originalImages,
+    this.credits,
+    this.updateFlag,
+    this.characterStats});
+
+  Character.fromJson(Map<String, dynamic> json) {
+    sId = json['_id'];
+    name = json['name'];
+    rawName = json['rawName'];
+    gender = json['gender'];
+    about = json['about'];
+    tvmazePersonID = json['tvmazePersonID'];
+    jikanPersonID = json['jikanPersonID'];
+    imageData = json['imageData'] != null
+        ? new Poster.fromJson(json['imageData'])
+        : null;
+    originalImages = json['originalImages'].cast<String>();
+    if (json['credits'] != null) {
+      json['credits'].forEach((v) {
+        credits!.add(new CharacterCredits.fromJson(v));
+      });
+    }
+    updateFlag = json['updateFlag'];
+    characterStats = json['userStats'] != null
+        ? CharacterStats.fromJson(json['userStats'])
+        : null;
+  }
+}
+
+class CharacterCredits {
+  String? movieID;
+  String? movieName;
+  String? moviePoster;
+  String? role;
+  String? actorID;
+  String? actorName;
+  String? actorImage;
+
+  CharacterCredits({this.movieID,
+    this.movieName,
+    this.moviePoster,
+    this.role,
+    this.actorID,
+    this.actorName,
+    this.actorImage});
+
+  CharacterCredits.fromJson(Map<String, dynamic> json) {
+    movieID = json['movieID'];
+    movieName = json['movieName'];
+    moviePoster = json['moviePoster'];
+    role = json['role'];
+    actorID = json['actorID'];
+    actorName = json['actorName'];
+    actorImage = json['actorImage'];
+  }
+}
+
+class CharacterStats {
+  bool? likeCharacter;
+  bool? dislikeCharacter;
+  int? likeCharacterCount;
+  int? dislikeCharacterCount;
+
+  CharacterStats({this.likeCharacter,
+    this.dislikeCharacter,
+    this.likeCharacterCount,
+    this.dislikeCharacterCount});
+
+  CharacterStats.fromJson(Map<String, dynamic> json) {
+    likeCharacter = json['like_character'];
+    dislikeCharacter = json['dislike_character'];
+    likeCharacterCount = json['like_character_count'];
+    dislikeCharacterCount = json['dislike_character_count'];
+  }
+}
+
 class Staff {
   String? sId;
   String? name;
@@ -11,11 +109,11 @@ class Staff {
   String? deathday;
   Poster? imageData;
   List<String>? originalImages;
-  List<Credits>? credits = [];
+  List<StaffCredits>? credits = [];
   bool? updateFlag;
   int? dislikesCount;
   int? likesCount;
-  UserStats? userStats;
+  UserStaffStats? userStaffStats;
 
   Staff({this.sId,
     this.name,
@@ -33,7 +131,7 @@ class Staff {
     this.updateFlag,
     this.dislikesCount,
     this.likesCount,
-    this.userStats});
+    this.userStaffStats});
 
   Staff.fromJson(Map<String, dynamic> json) {
     sId = json['_id'];
@@ -52,19 +150,19 @@ class Staff {
     originalImages = json['originalImages'] != null ? List<String>.from(json['originalImages']) : null;
     if (json['credits'] != null) {
       json['credits'].forEach((v) {
-        credits!.add(Credits.fromJson(v));
+        credits!.add(StaffCredits.fromJson(v));
       });
     }
     updateFlag = json['updateFlag'];
     dislikesCount = json['dislikesCount'];
     likesCount = json['likesCount'];
-    userStats = json['userStats'] != null
-        ? UserStats.fromJson(json['userStats'])
+    userStaffStats = json['userStats'] != null
+        ? UserStaffStats.fromJson(json['userStats'])
         : null;
   }
 }
 
-class Credits {
+class StaffCredits {
   String? movieID;
   String? movieName;
   String? moviePoster;
@@ -74,7 +172,7 @@ class Credits {
   String? characterRole;
   String? characterImage;
 
-  Credits(
+  StaffCredits(
       {this.movieID,
         this.movieName,
         this.moviePoster,
@@ -84,7 +182,7 @@ class Credits {
         this.characterRole,
         this.characterImage});
 
-  Credits.fromJson(Map<String, dynamic> json) {
+  StaffCredits.fromJson(Map<String, dynamic> json) {
     movieID = json['movieID'];
     movieName = json['movieName'];
     moviePoster = json['moviePoster'];
@@ -137,6 +235,42 @@ class UserStats {
     dislikeMovieCount = json['dislike_movie_count'];
     saveCount = json['save_count'];
     futureListCount = json['future_list_count'];
+  }
+
+  @override
+  String toString() {
+    return 'UserStats{likeMovie: $likeMovie, dislikeMovie: $dislikeMovie, save: $save, futureList: $futureList, likeMovieCount: $likeMovieCount, dislikeMovieCount: $dislikeMovieCount, saveCount: $saveCount, futureListCount: $futureListCount}';
+  }
+}
+
+class UserStaffStats {
+  bool? likeStaff;
+  bool? dislikeStaff;
+  bool? followStaff;
+  int? likeStaffCount;
+  int? dislikeStaffCount;
+  int? followStaffCount;
+
+  UserStaffStats(
+      {this.likeStaff,
+        this.dislikeStaff,
+        this.followStaff,
+        this.likeStaffCount,
+        this.dislikeStaffCount,
+        this.followStaffCount});
+
+  UserStaffStats.fromJson(Map<String, dynamic> json) {
+    likeStaff = json['like_staff'];
+    dislikeStaff = json['dislike_staff'];
+    followStaff = json['follow_staff'];
+    likeStaffCount = json['like_staff_count'];
+    dislikeStaffCount = json['dislike_staff_count'];
+    followStaffCount = json['follow_staff_count'];
+  }
+
+  @override
+  String toString() {
+    return 'UserStaffStats{likeStaff: $likeStaff, dislikeStaff: $dislikeStaff, followStaff: $followStaff, likeStaffCount: $likeStaffCount, dislikeStaffCount: $dislikeStaffCount, followStaffCount: $followStaffCount}';
   }
 }
 

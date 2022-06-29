@@ -31,7 +31,7 @@ class _TrailerPartState extends State<TrailerPart> {
         SizedBox(
           height: 220,
           child: FutureBuilder(
-              future: getThirdPartItems(),
+              future: getTrailerPartItems(),
               builder: (context, AsyncSnapshot snapshot) => (snapshot.hasData) ? trailerList(snapshot.data) : HorizontalShimmerListWidget()
               ),
         ),
@@ -39,16 +39,13 @@ class _TrailerPartState extends State<TrailerPart> {
     );
   }
 
-  @override
   Widget trailerList(List<TrailerModel> list) {
-    return (list.isEmpty) ? Container(width: 1) :
-    ListView.builder(
-        scrollDirection: Axis.horizontal,
-        itemCount: list.length,
-        itemBuilder: (BuildContext context, int index) {
-          return ShortTrailerItemWidget(list[index].rawTitle!, list[index].type!, list[index].rating, (list[index].posters != null ? list[index].posters![0].url : null),
-              (list[index].trailers != null ? list[index].trailers![0].url : null));
-        }
+    return ListView.builder(
+          scrollDirection: Axis.horizontal,
+          itemCount: list.length,
+          itemBuilder: (BuildContext context, int index) {
+            return ShortTrailerItemWidget(list[index]);
+          }
     );
   }
 }

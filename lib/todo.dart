@@ -20,3 +20,9 @@
 //todo shimmer problem
 //todo no image -> one image instead of all
 //todo shimmer problem
+//todo const FavoriteScreen(),
+//todo show image again
+//todo check empty list in first screen
+//todo serial download
+//todo online watch
+//todo problrm in fliter height

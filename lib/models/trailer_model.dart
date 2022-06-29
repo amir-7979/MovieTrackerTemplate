@@ -2,54 +2,89 @@
 import 'package:app04/models/properties_model.dart';
 
 class TrailerModel {
-  String? id;
+  String? sId;
+  String? releaseState;
+  Rank? rank;
   String? title;
   String? type;
   String? rawTitle;
-  int? like;
-  List<Poster>? posters;
-  List<Trailers>? trailers;
+  List<String>? alternateTitles;
+  int? updateDate;
+  List<Poster>? posters = [];
+  Summary? summary;
+  List<Trailers>? trailers = [];
+  LatestData? latestData;
   String? status;
+  String? releaseDay;
   String? year;
-  String? rated;
+  String? premiered;
+  dynamic? nextEpisode;
+  BoxOfficeData? boxOfficeData;
   List<String>? genres;
-  double? rating;
-  List<dynamic>? qualities;
-  int? likesCount;
+  Rating? rating;
+  UserStats? userStats;
 
-  TrailerModel({
-    this.id,
-    this.title,
-    this.type,
-    this.rawTitle,
-    this.like,
-    this.posters,
-    this.trailers,
-    this.status,
-    this.year,
-    this.rated,
-    this.genres,
-    this.rating,
-    this.qualities,
-    this.likesCount,
-  });
+  TrailerModel(
+      {this.sId,
+        this.releaseState,
+        this.rank,
+        this.title,
+        this.type,
+        this.rawTitle,
+        this.alternateTitles,
+        this.updateDate,
+        this.posters,
+        this.summary,
+        this.trailers,
+        this.latestData,
+        this.status,
+        this.releaseDay,
+        this.year,
+        this.premiered,
+        this.nextEpisode,
+        this.boxOfficeData,
+        this.genres,
+        this.rating,
+        this.userStats});
 
   TrailerModel.fromJson(Map<String, dynamic> json) {
-    id = json['_id'] as String?;
-    title = json['title'] as String?;
-    type = json['type'] as String?;
-    rawTitle = json['rawTitle'] as String?;
-    like = json['like'] as int?;
-    posters = (json['posters'] as List?)?.map((dynamic e) => Poster.fromJson(e as Map<String,dynamic>)).toList();
-    trailers = (json['trailers'] as List?)?.map((dynamic e) => Trailers.fromJson(e as Map<String,dynamic>)).toList();
-    status = json['status'] as String?;
-    year = json['year'] as String?;
-    rated = json['rated'] as String?;
-    genres = (json['genres'] as List?)?.map((dynamic e) => e as String).toList();
-    rating = (json['rating']['imdb'].toDouble());
-    qualities = json['qualities'] as List?;
-    likesCount = json['likesCount'] as int?;
+    sId = json['_id'];
+    releaseState = json['releaseState'];
+    rank = json['rank'] != null ? new Rank.fromJson(json['rank']) : null;
+    title = json['title'];
+    type = json['type'];
+    rawTitle = json['rawTitle'];
+    alternateTitles = json['alternateTitles'].cast<String>();
+    updateDate = json['update_date'];
+    if (json['posters'] != null) {
+      json['posters'].forEach((v) {
+        posters!.add(Poster.fromJson(v));
+      });
+    }
+    summary =
+    json['summary'] != null ? new Summary.fromJson(json['summary']) : null;
+    if (json['trailers'] != null) {
+      json['trailers'].forEach((v) {
+        trailers!.add( Trailers.fromJson(v));
+      });
+    }
+    latestData = json['latestData'] != null
+        ?  LatestData.fromJson(json['latestData'])
+        : null;
+    status = json['status'];
+    releaseDay = json['releaseDay'];
+    year = json['year'];
+    premiered = json['premiered'];
+    nextEpisode = json['nextEpisode'];
+    boxOfficeData = json['boxOfficeData'] != null
+        ?  BoxOfficeData.fromJson(json['boxOfficeData'])
+        : null;
+    genres = json['genres'].cast<String>();
+    rating =
+    json['rating'] != null ? new Rating.fromJson(json['rating']) : null;
+    userStats = json['userStats'] != null
+        ?  UserStats.fromJson(json['userStats'])
+        : null;
   }
-
 }
 

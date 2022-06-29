@@ -1,6 +1,7 @@
 import 'package:app04/models/search_filter_model.dart';
 import 'package:app04/screens/download/download_screen.dart';
 import 'package:app04/screens/time_line/time_line_vertical.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../screens/active_session/active_sessions_screen.dart';
@@ -12,8 +13,8 @@ import '../screens/more/more_screen.dart';
 import '../screens/person_info_screen/PersonInfoScreen.dart';
 import '../screens/profile/profile_page_screen.dart';
 import '../screens/search/search_screen.dart';
-import '../screens/staff/staff_screen.dart';
 import '../screens/start/start_screen.dart';
+import 'file_helper.dart';
 import 'http_helper.dart';
 
 late double screenWidth;
@@ -22,7 +23,7 @@ const double itemHeight = 180;
 bool isLoggedIn = false;
 bool activeConnection = false;
 bool isLodding = true;
-//bool showShimmer = true;
+String dirPath = '';
 
 const color1 = Color(0xff313144);
 const color2 = Color(0xffdcd31a);
@@ -66,7 +67,7 @@ final routes = {
   MoreScreen.routeName: (_) => MoreScreen(),
   LoginScreen.routeName: (_) => LoginScreen(),
   SignUpScreen.routeName: (_) => SignUpScreen(),
-  SearchScreen.routeName: (_) => const SearchScreen(),
+  SearchScreen.routeName: (_) => SearchScreen(),
   ProfileScreen.routeName: (_) => const ProfileScreen(),
   InfoScreen.routeName: (_) => const InfoScreen(),
   GenresScreen.routeName: (_) => const GenresScreen(),
@@ -74,10 +75,11 @@ final routes = {
   DownloadScreen.routeName: (_) =>  const DownloadScreen(),
   VerticalTimeLine.routeName: (_) =>  const VerticalTimeLine(),
   PersonInfoScreen.routeName: (_) => const PersonInfoScreen(),
-  StaffScreen.routeName: (_) => StaffScreen(),
 };
 
 Future<void> initialize() async {
+  dirPath = await FileHelper.createFolder('MovieTracker');
+  print(dirPath);
   await preInit();
   await checkUserConnection();
     if (activeConnection && isLoggedIn) await getToken();

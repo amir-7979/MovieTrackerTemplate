@@ -2,6 +2,7 @@ import 'package:app04/screens/info/part.dart';
 import 'package:flutter/material.dart';
 import 'package:share_plus/share_plus.dart';
 import '../../icons/my_flutter_app_icons.dart';
+import '../../models/properties_model.dart';
 import '../../utilities/cache_image.dart';
 import '../../utilities/consts.dart';
 import '../../utilities/function_helper.dart';
@@ -38,21 +39,19 @@ class _InfoSectionWidgetState extends State<InfoSectionWidget> {
                   height: screenWidth,
                   child: InkWell(
                     onDoubleTap: () async {
-                      setState(() {
-                        like(
-                            widget._infoModel.userStats.likeMovie,
-                            widget._infoModel.userStats.dislikeMovie,
-                            widget._infoModel.userStats.likeMovieCount,
-                            widget._infoModel.userStats.dislikeMovieCount);
-                      });
+                      UserStats userStats = widget._infoModel.userStats;
+                      setState(() => widget._infoModel.userStats =
+                          disLikeMovie(widget._infoModel.userStats));
                       int res = await likeOrDislike(
-                          'like_movie',
+                          'dislike_movie',
                           widget._infoModel.id!,
-                          (widget._infoModel.userStats.likeMovie)
+                          (widget._infoModel.userStats.dislikeMovie)
                               ? false
                               : true);
-                      if (res == 200) {
-                        setState(() {});
+                      if (res != 200) {
+                        setState(() {
+                          widget._infoModel.userStats = userStats;
+                        });
                       }
                     },
                     child: FittedBox(
@@ -83,22 +82,19 @@ class _InfoSectionWidgetState extends State<InfoSectionWidget> {
                         IconButton(
                             splashRadius: 0.1,
                             onPressed: () async {
-                              setState(() {
-                                like(
-                                    widget._infoModel.userStats.likeMovie,
-                                    widget._infoModel.userStats.dislikeMovie,
-                                    widget._infoModel.userStats.likeMovieCount,
-                                    widget._infoModel.userStats
-                                        .dislikeMovieCount);
-                              });
+                              UserStats userStats = widget._infoModel.userStats;
+                              setState(() => widget._infoModel.userStats =
+                                  likeMovie(widget._infoModel.userStats));
                               int res = await likeOrDislike(
                                   'like_movie',
                                   widget._infoModel.id!,
                                   (widget._infoModel.userStats.likeMovie)
                                       ? false
                                       : true);
-                              if (res == 200) {
-                                setState(() {});
+                              if (res != 200) {
+                                setState(() {
+                                  widget._infoModel.userStats = userStats;
+                                });
                               }
                             },
                             icon: Icon(
@@ -108,26 +104,23 @@ class _InfoSectionWidgetState extends State<InfoSectionWidget> {
                                   : Colors.grey,
                             )),
                         Text(
-                            '${widget._infoModel.userStats.likeMovieCount.toString()}  -  ${widget._infoModel.userStats.dislikeMovieCount.toString()}'),
+                            '${widget._infoModel.userStats.likeMovieCount}  -  ${widget._infoModel.userStats.dislikeMovieCount}'),
                         IconButton(
                             splashRadius: 0.1,
                             onPressed: () async {
-                              setState(() {
-                                like(
-                                    widget._infoModel.userStats.dislikeMovie,
-                                    widget._infoModel.userStats.likeMovie,
-                                    widget
-                                        ._infoModel.userStats.dislikeMovieCount,
-                                    widget._infoModel.userStats.likeMovieCount);
-                              });
+                              UserStats userStats = widget._infoModel.userStats;
+                              setState(() => widget._infoModel.userStats =
+                                  disLikeMovie(widget._infoModel.userStats));
                               int res = await likeOrDislike(
                                   'dislike_movie',
                                   widget._infoModel.id!,
                                   (widget._infoModel.userStats.dislikeMovie)
                                       ? false
                                       : true);
-                              if (res == 200) {
-                                setState(() {});
+                              if (res != 200) {
+                                setState(() {
+                                  widget._infoModel.userStats = userStats;
+                                });
                               }
                             },
                             icon: Padding(
@@ -298,13 +291,14 @@ class _InfoSectionWidgetState extends State<InfoSectionWidget> {
                 ? ((widget._infoModel.trailers[0].url != null)
                     ? TextButton(
                         onPressed: () async {
-                          showDialog(
+                          _bottomSheet(context);
+                         /* showDialog(
                               context: context,
                               useSafeArea: false,
                               barrierDismissible: false,
                               builder: (BuildContext context) =>
-                                  TrailerPartWidget(
-                                      widget._infoModel.trailers[0].url));
+                                  ShowOnlineTrailerWidget(
+                                      widget._infoModel.trailers[0].url));*/
                         },
                         child: const Text('watch trailer'),
                       )
@@ -389,4 +383,98 @@ class _InfoSectionWidgetState extends State<InfoSectionWidget> {
       overflow: isReadMore ? TextOverflow.visible : TextOverflow.ellipsis,
     );
   }
+
+  void _bottomSheet(ctx) {
+    showModalBottomSheet(
+        isScrollControlled: true,
+        isDismissible: false,
+        context: ctx,
+        backgroundColor: color5,
+        elevation: 10,
+        shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.vertical(top: Radius.circular(30)),
+        ),
+        builder: (BuildContext context) {
+          return Padding(
+              padding: const EdgeInsets.fromLTRB(5, 2, 5, 5),
+              child: Wrap(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.only(left: 5),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          'Trailer',
+                          style: TextStyle(fontSize: 20),
+                        ),
+                        ElevatedButton(
+                          onPressed: () {
+                            Navigator.pop(context);
+                          },
+                          child: Icon(Icons.close),
+                          style: ElevatedButton.styleFrom(
+                              fixedSize: const Size(5, 5),
+                              shape: const CircleBorder(),
+                              elevation: 5,
+                              primary: Colors.redAccent),
+                        )
+                      ],
+                    ),
+                  ),
+                  //ShowOnlineTrailerWidget(_trailerModel.trailers![0].url ?? ''),
+                  ChewiePlayer(widget._infoModel.trailers![0].url!),
+                  SizedBox(height: 15),
+                  Divider(),
+                  textInfo('title', widget._infoModel.title),
+                  Divider(),
+                  SizedBox(height: 15),
+                  textInfo(
+                      'genres',
+                      widget._infoModel.genres.toString().substring(
+                          1, widget._infoModel.genres.toString().length - 1)),
+                  Divider(),
+                  SizedBox(height: 15),
+                  textInfo('type', widget._infoModel.type),
+                  Divider(),
+                  SizedBox(height: 15),
+                  textInfo('status', widget._infoModel.status),
+                  Divider(),
+                  SizedBox(height: 15),
+                  textInfo('summary', widget._infoModel.summary!.english),
+                  SizedBox(height: 10),
+                ],
+              ));
+        });
+  }
+
+  Widget textInfo(String key, String? value) {
+    if (value != null && value != '')
+      return Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: [
+          Text(
+            key + " : ",
+            style: const TextStyle(color: Colors.cyan, fontSize: 18),
+          ),
+          const SizedBox(
+            width: 10,
+          ),
+          Expanded(
+            child: Text(
+              value,
+              maxLines: 5,
+              style: const TextStyle(color: Colors.white, fontSize: 18),
+              overflow: TextOverflow.ellipsis,
+              textDirection: TextDirection.ltr,
+              textAlign: TextAlign.start,
+            ),
+          ),
+        ],
+      );
+    else
+      return const SizedBox(width: 1);
+  }
+
 }

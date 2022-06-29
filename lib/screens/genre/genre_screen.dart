@@ -12,15 +12,19 @@ class GenresScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
-      child: FutureBuilder(
-          future: getGenres(),
-          builder: (context, AsyncSnapshot snapshot) {
-            if (snapshot.hasData) {
-              return genresList(snapshot.data);
-            } else {
-              return genresListShimmer();
-            }
-          }),
+      child: Scaffold(
+        backgroundColor: color4,
+        appBar: AppBar(title: Text('Genre'),),
+        body: FutureBuilder(
+            future: getGenres(),
+            builder: (context, AsyncSnapshot snapshot) {
+              if (snapshot.hasData) {
+                return genresList(snapshot.data);
+              } else {
+                return genresListShimmer();
+              }
+            }),
+      ),
     );
   }
 }

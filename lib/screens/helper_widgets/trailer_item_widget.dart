@@ -1,28 +1,22 @@
 import 'package:app04/screens/helper_widgets/trailer_part_widget.dart';
 import 'package:flutter/material.dart';
+import 'package:video_player/video_player.dart';
+import '../../models/trailer_model.dart';
 import '../../utilities/cache_image.dart';
+import '../../utilities/consts.dart';
 
 class ShortTrailerItemWidget extends StatelessWidget {
-  String name, type;
-  String? imageUrl, trailerUrl;
-  double? rate;
+  TrailerModel _trailerModel;
   final double width = 180.0;
 
-  ShortTrailerItemWidget(
-      this.name, this.type, this.rate, this.imageUrl, this.trailerUrl, {Key? key}) : super(key: key);
+  ShortTrailerItemWidget(this._trailerModel);
 
   @override
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.fromLTRB(0, 0, 6, 0),
       child: InkWell(
-          onTap: () async {
-              showDialog(
-                  context: context,
-                  useSafeArea: false,
-                  barrierDismissible: false,
-                  builder: (BuildContext context) => TrailerPartWidget(trailerUrl ?? ''));
-          },
+          onTap: () async => _trailerModel.trailers![0].url != null ? _bottomSheet(context) : (){},
           child: Column(
             children: [
               Stack(
@@ -32,17 +26,8 @@ class ShortTrailerItemWidget extends StatelessWidget {
                     width: width,
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(5.0),
-
-                      child:FittedBox(
-                      child: (imageUrl != null && imageUrl != '')
-                          ? CacheImage(imageUrl)
-                          : const Padding(
-                              padding: EdgeInsets.fromLTRB(7, 1, 7, 1),
-                              child: Text('No Image'),
-                            ),
-                      fit: BoxFit.fill,
+                      child: CacheImage(_trailerModel.posters![0].url),
                     ),
-                  ),
                   ),
                   SizedBox(
                     height: 150,
@@ -66,7 +51,8 @@ class ShortTrailerItemWidget extends StatelessWidget {
                       child: Container(
                         width: 30,
                         height: 30,
-                        child: Center(child: Text(rate.toString())),
+                        child: Center(
+                            child: Text(_trailerModel.rating!.imdb.toString())),
                         decoration: BoxDecoration(
                             shape: BoxShape.circle,
                             color: ThemeData().primaryColor),
@@ -81,7 +67,7 @@ class ShortTrailerItemWidget extends StatelessWidget {
               SizedBox(
                 width: width,
                 child: Text(
-                  name,
+                  _trailerModel.title!,
                   overflow: TextOverflow.ellipsis,
                   textAlign: TextAlign.center,
                 ),
@@ -90,9 +76,13 @@ class ShortTrailerItemWidget extends StatelessWidget {
                 children: [
                   const Padding(
                     padding: EdgeInsets.fromLTRB(0, 0, 5, 0),
-                    child: Icon(Icons.circle, size: 12,),
+                    child: Icon(
+                      Icons.circle,
+                      size: 12,
+                    ),
                   ),
-                  Text(type ,
+                  Text(
+                    _trailerModel.type!,
                     overflow: TextOverflow.ellipsis,
                     textAlign: TextAlign.center,
                     style: const TextStyle(color: Colors.red),
@@ -102,5 +92,99 @@ class ShortTrailerItemWidget extends StatelessWidget {
             ],
           )),
     );
+  }
+
+  void _bottomSheet(ctx) {
+    showModalBottomSheet(
+        isScrollControlled: true,
+        isDismissible: false,
+        context: ctx,
+        backgroundColor: color5,
+        elevation: 10,
+        shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.vertical(top: Radius.circular(30)),
+        ),
+        builder: (BuildContext context) {
+          return Padding(
+              padding: const EdgeInsets.fromLTRB(5, 2, 5, 5),
+              child: Wrap(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.only(left: 5),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          'Trailer',
+                          style: TextStyle(fontSize: 20),
+                        ),
+                        ElevatedButton(
+                          onPressed: () {
+                            Navigator.pop(context);
+                          },
+                          child: Icon(Icons.close),
+                          style: ElevatedButton.styleFrom(
+                            fixedSize: const Size(5, 5),
+                              shape: const CircleBorder(),
+                              elevation: 5,
+                              primary: Colors.redAccent),
+                        )
+                      ],
+                    ),
+                  ),
+                  //ShowOnlineTrailerWidget(_trailerModel.trailers![0].url ?? ''),
+                  ChewiePlayer(_trailerModel.trailers![0].url!),
+                  SizedBox(height: 15),
+                  Divider(),
+
+                  textInfo('title', _trailerModel.title),
+                  Divider(),
+                  SizedBox(height: 15),
+                  textInfo(
+                      'genres',
+                      _trailerModel.genres.toString().substring(
+                          1, _trailerModel.genres.toString().length - 1)),
+                  Divider(),
+                  SizedBox(height: 15),
+                  textInfo('type', _trailerModel.type),
+                  Divider(),
+                  SizedBox(height: 15),
+                  textInfo('status', _trailerModel.status),
+                  Divider(),
+                  SizedBox(height: 15),
+                  textInfo('summary', _trailerModel.summary!.english),
+                  SizedBox(height: 10),
+                ],
+              ));
+        });
+  }
+
+  Widget textInfo(String key, String? value) {
+    if (value != null && value != '')
+      return Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: [
+          Text(
+            key + " : ",
+            style: const TextStyle(color: Colors.cyan, fontSize: 18),
+          ),
+          const SizedBox(
+            width: 10,
+          ),
+          Expanded(
+            child: Text(
+              value,
+              maxLines: 5,
+              style: const TextStyle(color: Colors.white, fontSize: 18),
+              overflow: TextOverflow.ellipsis,
+              textDirection: TextDirection.ltr,
+              textAlign: TextAlign.start,
+            ),
+          ),
+        ],
+      );
+    else
+      return const SizedBox(width: 1);
   }
 }

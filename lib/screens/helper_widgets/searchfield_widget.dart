@@ -22,63 +22,65 @@ class _SearchFieldWidgetState extends State<SearchFieldWidget> {
 
   @override
   Widget build(BuildContext context) => Expanded(
-      child: SizedBox(
-        height: 50,
-        child: Container(
-          margin: const EdgeInsets.fromLTRB(0, 6, 0, 5),
-          decoration: BoxDecoration(
-              color: color1,
-              borderRadius: BorderRadius.circular(15.0),
-              boxShadow: const [
-                BoxShadow(
-                  offset: Offset(0, 1),
-                  blurRadius: 1.0,
+        child: SizedBox(
+          height: 50,
+          child: Container(
+            margin: const EdgeInsets.fromLTRB(0, 6, 0, 5),
+            decoration: BoxDecoration(
+                color: color1,
+                borderRadius: BorderRadius.circular(15.0),
+                boxShadow: const [
+                  BoxShadow(
+                    offset: Offset(0, 1),
+                    blurRadius: 1.0,
+                  ),
+                  BoxShadow(
+                    offset: Offset(0, -1),
+                    blurRadius: 1.0,
+                  )
+                ]),
+            child: TextField(
+              controller: _searchController,
+              decoration: InputDecoration(
+                suffixIcon: (!isSearchEmpty)
+                    ? IconButton(
+                        splashRadius: 0.1,
+                        icon: const Icon(Icons.close),
+                        onPressed: () {
+                          _searchController.clear();
+                          FocusManager.instance.primaryFocus?.unfocus();
+                          setState(() => isSearchEmpty = true);
+                        },
+                      )
+                    : const SizedBox(width: 0.1),
+                icon: SizedBox(
+                  width: 25,
+                  child: IconButton(
+                    splashRadius: 0.1,
+                    onPressed: () {
+                      FocusManager.instance.primaryFocus?.unfocus();
+                      widget.submitName(_searchController.text);
+                    },
+                    icon: const Icon(Icons.search),
+                  ),
                 ),
-                BoxShadow(
-                  offset: Offset(0, -1),
-                  blurRadius: 1.0,
-                )
-              ]),
-          child: TextField(
-            controller: _searchController,
-            decoration: InputDecoration(
-              suffixIcon: (!isSearchEmpty)
-                  ? IconButton(
-                      icon: const Icon(Icons.close),
-                      onPressed: () {
-                        _searchController.clear();
-                        FocusManager.instance.primaryFocus?.unfocus();
-                        setState(() => isSearchEmpty = true);
-                      },
-                    )
-                  : const SizedBox(width: 0.1),
-              icon: SizedBox(
-                width: 25,
-                child: IconButton(
-                  onPressed: () {
-                    FocusManager.instance.primaryFocus?.unfocus();
-                    widget.submitName(_searchController.text);
-                  },
-                  icon: const Icon(Icons.search),
-                ),
+                border: InputBorder.none,
+                hintText: "Search ...",
               ),
-              border: InputBorder.none,
-              hintText: "Search ...",
+              onChanged: (newText) {
+                if (newText.isNotEmpty && isSearchEmpty) {
+                  setState(() {
+                    isSearchEmpty = false;
+                  });
+                } else if (newText.isEmpty && !isSearchEmpty) {
+                  setState(() {
+                    isSearchEmpty = true;
+                  });
+                }
+              },
+              onSubmitted: (text) => widget.submitName(text),
             ),
-            onChanged: (newText) {
-              if (newText.isNotEmpty && isSearchEmpty) {
-                setState(() {
-                  isSearchEmpty = false;
-                });
-              } else if (newText.isEmpty && !isSearchEmpty) {
-                setState(() {
-                  isSearchEmpty = true;
-                });
-              }
-            },
-            onSubmitted: (text) => widget.submitName(text),
           ),
         ),
-      ),
-    );
+      );
 }

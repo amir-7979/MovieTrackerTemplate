@@ -5,9 +5,9 @@ import '../../models/properties_model.dart';
 import '../../utilities/cache_image.dart';
 import '../../utilities/consts.dart';
 
-class StaffCreditWidget extends StatelessWidget {
-  final StaffCredits _credit;
-  const StaffCreditWidget(this._credit, {Key? key}) : super(key: key);
+class CharacterCreditWidget extends StatelessWidget {
+  final CharacterCredits _credit;
+  const CharacterCreditWidget(this._credit, {Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -46,9 +46,7 @@ class StaffCreditWidget extends StatelessWidget {
                 children: [
                   Text(_credit.movieName ?? '', overflow: TextOverflow.ellipsis, textAlign: TextAlign.start, style: const TextStyle(fontSize: 17),),
                   const SizedBox(height: 25),
-                  Text('Character Role : ${_credit.characterRole}', textAlign: TextAlign.left, style: const TextStyle(fontSize: 15)),
-                  const SizedBox(height: 10),
-                  Text('Character Name : ${_credit.characterName}', textAlign: TextAlign.left, style: const TextStyle(fontSize: 15)),
+                  Text('Actor Name : ${_credit.actorName}', textAlign: TextAlign.left, style: const TextStyle(fontSize: 15)),
                 ],
               ),
             ),

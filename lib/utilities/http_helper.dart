@@ -186,15 +186,14 @@ Future<List<LowDataItem>?> getSecondPartItems(int i, int page) async {
     return List<LowDataItem>.from(
         response.data['data'].map((x) => LowDataItem.fromJson(x)));
   } catch (error) {
-
     return null;
   }
 }
 
-Future<List<TrailerModel>?> getThirdPartItems() async {
+Future<List<TrailerModel>?> getTrailerPartItems() async {
   try {
     final response = await dio.get(
-      'movies/trailers/movie-serial-anime_movie-anime_serial/low/0-10/0-10/1',
+      'movies/trailers/movie-serial-anime_movie-anime_serial/medium/0-10/0-10/1',
       options: cacheOption,
     );
     return List<TrailerModel>.from(
@@ -205,7 +204,6 @@ Future<List<TrailerModel>?> getThirdPartItems() async {
 }
 
 Future<List<LowDataItem>?> getSearchItems(String title, int page, String filter) async {
-
   try {
     final response = await dio.get(
       'movies/searchbytitle/$title$filter$page',
@@ -224,10 +222,8 @@ Future<List<Staff>?> getStaffSearchItems(String title, int page, String filter, 
       'movies/searchbytitle/$title$filter$page',
       options: cacheOption,
     );
-    print(response.data.toString());
     return List<Staff>.from(!staff ? response.data['data']['staff'].map((x) => Staff.fromJson(x)) :  response.data['data']['characters'].map((x) => Staff.fromJson(x)));
   } catch (error) {
-    print(error);
     return null;
   }
 }
@@ -256,19 +252,26 @@ Future<MovieInfoModel?> getMovieInfo(String txt) async {
 }
 
 Future<Staff?> getStaffInfo(String txt) async {
-  print(txt);
   try {
     final response = await dio.get(
       'movies/staff/searchById/$txt',
     );
-    print(response.data.toString());
     return Staff.fromJson(response.data['data']);
   } catch (error) {
-    print(error);
     return null;
   }
 }
 
+Future<Character?> getCharacterInfo(String txt) async {
+  try {
+    final response = await dio.get(
+      'movies/characters/searchById/$txt',
+    );
+    return Character.fromJson(response.data['data']);
+  } catch (error) {
+    return null;
+  }
+}
 
 Future<List<Genre>?> getGenres() async {
   try {
@@ -343,7 +346,7 @@ Future<int> likeOrDislike(String type, String id, bool remove) async {
   try {
     final response = await dio.put('movies/addUserStats/$type/$id',
         queryParameters: {'remove': remove});
-   return int.parse(response.data['code']);
+   return response.data['code'];
   } catch (error) {
     return -1;
   }

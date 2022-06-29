@@ -8,7 +8,9 @@ import '../../models/properties_model.dart';
 
 class StaffScrollListWidget extends StatefulWidget {
   final Function _function;
-  StaffScrollListWidget(this._function, {Key? key}) : super(key: key);
+  final bool _isStaff;
+
+  StaffScrollListWidget(this._function, this._isStaff);
 
   @override
   State<StaffScrollListWidget> createState() => _StaffScrollListWidgetState();
@@ -88,7 +90,7 @@ class _StaffScrollListWidgetState extends State<StaffScrollListWidget> {
             pagingController: _pagingController,
             scrollController: _scrollController,
             builderDelegate: PagedChildBuilderDelegate<Staff>(
-              itemBuilder: (context, item, index) => StaffWidget(item),
+              itemBuilder: (context, item, index) => StaffWidget(item, widget._isStaff),
               firstPageProgressIndicatorBuilder: (_) => SingleChildScrollView(
                 child: Column(
                   children: [

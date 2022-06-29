@@ -2,9 +2,7 @@ import 'package:app04/screens/helper_widgets/shimmer_custom_widget.dart';
 import 'package:flutter/material.dart';
 import '../../utilities/consts.dart';
 
-class HorizontalShimmer extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
+Widget HorizontalShimmer() {
     return Padding(
       padding: const EdgeInsets.fromLTRB(0, 0, 4, 0),
       child: Column(
@@ -28,9 +26,8 @@ class HorizontalShimmer extends StatelessWidget {
         ],
       ),
     );
-  }
-
 }
+
 Widget HorizontalShimmerListWidget({BuildContext? context, String? name}) {
   return  Column(
     mainAxisAlignment: MainAxisAlignment.start,

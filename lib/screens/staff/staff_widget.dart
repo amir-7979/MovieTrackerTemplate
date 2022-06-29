@@ -2,12 +2,13 @@ import 'package:app04/screens/staff/staff_info_screen.dart';
 import 'package:flutter/material.dart';
 import '../../utilities/cache_image.dart';
 import '../../utilities/consts.dart';
-import '../person_info_screen/PersonInfoScreen.dart';
 
 class StaffWidget extends StatelessWidget {
   final dynamic _itemModel;
+  final bool _isStaff;
 
-  StaffWidget(this._itemModel, {Key? key}) : super(key: key);
+
+  StaffWidget(this._itemModel, this._isStaff);
 
   @override
   Widget build(BuildContext context) {
@@ -16,7 +17,7 @@ class StaffWidget extends StatelessWidget {
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => StaffInfoScreen(args: {'id': _itemModel.sId, 'url': _itemModel.imageData != null ? _itemModel.imageData.url ?? '' : '',}),
+              builder: (context) => StaffInfoScreen(args: {'id': _itemModel.sId, 'url': _itemModel.imageData != null ? _itemModel.imageData.url ?? '' : '', 'type': '${_isStaff}'}),
             ),
           ),
       child: Card(
