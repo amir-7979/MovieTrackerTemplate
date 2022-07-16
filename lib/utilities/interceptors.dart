@@ -12,7 +12,7 @@ class GeneralInterceptor implements Interceptor {
 
   @override
   void onRequest(RequestOptions options, RequestInterceptorHandler handler) {
-    options.headers = {"Content-Type": 'application/json; charset=UTF-8'};
+    (options.path.contains('upload')) ?  options.headers = {"Content-Type": 'image/jpg'} : options.headers = {"Content-Type": 'application/json; charset=UTF-8'};
     if (options.path.contains("signup") || options.path.contains("login")) {
       options.headers
           .addEntries({"accessToken": '', "refreshToken": ''}.entries);

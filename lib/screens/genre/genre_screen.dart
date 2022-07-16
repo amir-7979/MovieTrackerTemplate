@@ -32,12 +32,12 @@ class GenresScreen extends StatelessWidget {
 Widget genresList(List<Genre> items) {
   return GridView.builder(
     padding: const EdgeInsets.fromLTRB(5, 5, 5, 10),
-      gridDelegate:
-          const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 3),
-      itemCount: items.length,
-      itemBuilder: (BuildContext ctx, index) {
-        return GenreItemWidget(items[index].genre, items[index].count, items[index].poster.url);
-      },
+    gridDelegate:
+    const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 3),
+    itemCount: items.length,
+    itemBuilder: (BuildContext ctx, index) {
+      return GenreItemWidget(items[index].genre, items[index].count, items[index].poster.url);
+    },
   );
 }
 

@@ -6,12 +6,12 @@ class Session {
     required this.errorMessage,
   });
   late final Device thisDevice;
-  late final List<Device> activeSessions;
+  late  List<Device>? activeSessions;
   late final int code;
   late final String errorMessage;
 
   Session.fromJson(Map<String, dynamic> json){
-    thisDevice = Device.fromJson(json['thisDevice']);
+    if(json['thisDevice'] != null) thisDevice =  Device.fromJson(json['thisDevice']);
     activeSessions = List.from(json['activeSessions']).map((e)=>Device.fromJson(e)).toList();
     code = json['code'];
     errorMessage = json['errorMessage'];

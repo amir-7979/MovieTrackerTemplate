@@ -49,40 +49,42 @@ class _SearchScreenState extends State<SearchScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: color4,
-      appBar: AppBar(
-        title: Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            SizedBox(width: 5),
-            SearchFieldWidget(submitName),
-            IconButton(
-              onPressed: () async {
-                _bottomSheet(context);
-              },
-              icon: const Icon(
-                Icons.filter_alt,
-                color: Colors.white,
-                size: 30,
+    return SafeArea(
+      child: Scaffold(
+        backgroundColor: color4,
+        appBar: AppBar(
+          title: Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              SizedBox(width: 5),
+              SearchFieldWidget(submitName),
+              IconButton(
+                onPressed: () async {
+                  _bottomSheet(context);
+                },
+                icon: const Icon(
+                  Icons.filter_alt,
+                  color: Colors.white,
+                  size: 30,
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
-      ),
-      body: SafeArea(
-        child: Column(children: [
-          (!refresh)
-              ? ((FilterType.film == widget.searchFilter.filterType)
-                  ? Expanded(child: ScrollListWidget(searchFilm))
-                  : (FilterType.staff == widget.searchFilter.filterType)
-                      ? Expanded(child: StaffScrollListWidget(searchStaff, true),)
-                      : Expanded(
-                          child: StaffScrollListWidget(searchCharacter, false),
-                        ))
-              : const SizedBox(width: 1)
-        ]),
+        body: SafeArea(
+          child: Column(children: [
+            (!refresh)
+                ? ((FilterType.film == widget.searchFilter.filterType)
+                    ? Expanded(child: ScrollListWidget(searchFilm))
+                    : (FilterType.staff == widget.searchFilter.filterType)
+                        ? Expanded(child: StaffScrollListWidget(searchStaff, true),)
+                        : Expanded(
+                            child: StaffScrollListWidget(searchCharacter, false),
+                          ))
+                : const SizedBox(width: 1)
+          ]),
+        ),
       ),
     );
   }

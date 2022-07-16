@@ -51,6 +51,7 @@ class _StartScreenState extends State<StartScreen> {
         bottomNavigationBar: ConvexAppBar.badge(
           const <int, dynamic>{},
           backgroundColor: Theme.of(context).primaryColor,
+          elevation: 5,
           height: 42,
           style: _tabStyle,
           items: <TabItem>[

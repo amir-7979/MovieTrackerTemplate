@@ -17,7 +17,7 @@ class MoreScreen extends StatelessWidget {
     return SafeArea(
       child: Scaffold(
         backgroundColor: color4,
-        appBar: AppBar(title:  Text(_map!['argName'])),
+        appBar: AppBar(title: Text(_map!['argName'].toString().replaceAll('_', ' '))),
         body: ScrollListWidget(getMoreItem),
       ),
     );

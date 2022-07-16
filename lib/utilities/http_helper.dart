@@ -19,6 +19,8 @@ import '../models/serial_info_model.dart';
 import '../models/session_model.dart';
 import '../models/trailer_model.dart';
 import 'consts.dart';
+import 'package:http_parser/http_parser.dart';
+
 
 UserClient userClient = UserClient();
 late Map<String, String> deviceInfo;
@@ -107,17 +109,20 @@ Future<String> logOutUser() async {
 Future<List<Device>> forceLogoutAll() async {
   final response = await dio.put('users/forceLogoutAll?noCookie=true');
   if (response.data['code'] == 200) {
-    return Session.fromJson(response.data).activeSessions;
+    return Session.fromJson(response.data).activeSessions!;
   } else {
     return response.data["errorMessage"];
   }
 }
 
-Future<List<Device>> forceLogout(String txt) async {
-  final response = await dio.put('users/forceLogout/{$txt}?noCookie=true');
+Future<List<Device>> forceLogout(String deviceId) async {
+  final response = await dio.put('users/forceLogout/$deviceId?noCookie=true');
   if (response.data['code'] == 200) {
-    return Session.fromJson(response.data).activeSessions;
+    log('log : ${response.data.toString()}');
+    return Session.fromJson(response.data).activeSessions!;
   } else {
+    print(response.data.toString());
+
     return response.data["errorMessage"];
   }
 }
@@ -133,7 +138,7 @@ Future<Session?> activeSessions() async {
 
 Future<Profile> myProfile() async {
   final response =
-      await dio.get('users/myProfile?noCookie=true', options: cacheOption);
+      await dio.get('users/myProfile?noCookie=true');
   if (response.data['code'] == 200) {
     return Profile.fromJson(response.data);
   } else {
@@ -165,7 +170,7 @@ Future<int?> getToken() async {
   return response.statusCode;
 }
 
-Future<Multiple?> getFirstPartItems() async {
+Future<Multiple?> getMultiplePartItems() async {
   try {
     final response = await dio.get(
       'movies/multiple/status/movie-serial-anime_movie-anime_serial/low/0-10/0-10/6/1',
@@ -177,7 +182,7 @@ Future<Multiple?> getFirstPartItems() async {
   }
 }
 
-Future<List<LowDataItem>?> getSecondPartItems(int i, int page) async {
+Future<List<LowDataItem>?> getTimeLinePartItems(int i, int page) async {
   try {
     final response = await dio.get(
       'movies/seriesOfDay/$i/movie-serial-anime_movie-anime_serial/0-10/0-10/$page',
@@ -232,7 +237,6 @@ Future<SerialInfoModel?> getSerialInfo(String txt) async {
   try {
     final response = await dio.get(
       'movies/searchbyid/$txt/high',
-      options: cacheOption,
     );
     return SerialInfoModel.fromJson(response.data['data']);
   } catch (error) {
@@ -253,9 +257,7 @@ Future<MovieInfoModel?> getMovieInfo(String txt) async {
 
 Future<Staff?> getStaffInfo(String txt) async {
   try {
-    final response = await dio.get(
-      'movies/staff/searchById/$txt',
-    );
+    final response = await dio.get('movies/staff/searchById/$txt',);
     return Staff.fromJson(response.data['data']);
   } catch (error) {
     return null;
@@ -346,6 +348,7 @@ Future<int> likeOrDislike(String type, String id, bool remove) async {
   try {
     final response = await dio.put('movies/addUserStats/$type/$id',
         queryParameters: {'remove': remove});
+    print(response.data.toString());
    return response.data['code'];
   } catch (error) {
     return -1;
@@ -370,5 +373,34 @@ Future<List<LowDataItem>?> userStatsList(String type, int page) async {
         response.data['data'].map((x) => LowDataItem.fromJson(x)));
   } catch (error) {
     return null;
+  }
+}
+
+Future<List<String>> addProfileImage(File file) async {
+  try {
+    String fileName = file.path.split('/').last;
+    FormData formData = FormData.fromMap({
+      'profileImage': await MultipartFile.fromFile(file.path, filename:fileName, contentType: MediaType("image", "jpg"))});
+
+    final response = await dio.post(
+      'users/uploadProfileImage?noCookie=true',
+      data: formData,
+    );
+    return response.data['data']['profileImages'].cast<String>();
+  } catch (error) {
+    print('sth wrong  :  $error');
+    return [];
+  }
+}
+
+Future<List<String>> removeProfileImage(String filename) async {
+  try {
+    final response = await dio.delete('users/removeProfileImage/$filename');
+    print(response.data.toString());
+
+    return response.data['data']['profileImages'].cast<String>();
+  } catch (error) {
+    print(error);
+    return [];
   }
 }

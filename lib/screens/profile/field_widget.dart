@@ -8,7 +8,7 @@ class FieldWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
+    return (fieldValue.isNotEmpty)? Padding(
       padding: const EdgeInsets.fromLTRB(20, 0, 0, 0),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -18,10 +18,11 @@ class FieldWidget extends StatelessWidget {
             padding: const EdgeInsets.fromLTRB(10, 10, 0, 2),
             child: Text(fieldValue, style: TextStyle(fontSize: 20, color: Colors.white)),
           ),
+          Divider(),
           //Container(height: 1, color: Colors.red),
           const SizedBox(height: 10,)
         ],
       ),
-    );
+    ) : SizedBox(height: 0.1,);
   }
 }

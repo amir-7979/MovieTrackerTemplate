@@ -1,5 +1,4 @@
 import 'package:app04/screens/staff/credit_widget.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:scroll_app_bar/scroll_app_bar.dart';
 import 'package:share_plus/share_plus.dart';
@@ -16,7 +15,7 @@ class StaffInfoScreen extends StatefulWidget {
   static const routeName = '/staff-info-screen';
   final Map<String, String?>? args;
 
-  const StaffInfoScreen({Key? key, this.args}) : super(key: key);
+   StaffInfoScreen({Key? key, this.args}) : super(key: key);
 
   @override
   State<StaffInfoScreen> createState() => StaffInfoScreenState();

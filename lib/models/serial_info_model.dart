@@ -139,9 +139,7 @@ class SerialInfoModel {
     viewMonth = json['view_month'] as int?;
     addDate = json['add_date'].toString();
     insertDate = json['insert_date'].toString();
-
     updateDate = json['update_date'].toString();
-
     apiUpdateDate = json['apiUpdateDate'].toString();
     castUpdateDate = json['castUpdateDate'].toString();
     seasons = (json['seasons'] as List?)?.map((dynamic e) => Seasons.fromJson(e as Map<String,dynamic>)).toList();
@@ -188,11 +186,6 @@ class SerialInfoModel {
     maps = makeMap();
   }
 
-  @override
-  String toString() {
-    return 'SerialInfoModel{seasons: $seasons}';
-  }
-
   List<Map<String, String>> makeMap(){
     List<Map<String, String>> newSeasons = [];
     Map<String, String> temp;
@@ -200,7 +193,7 @@ class SerialInfoModel {
     for(var se in seasons!){
       for(var ep in se.episodes!){
         for(var link in ep.links!){
-          split = link.info!.split('-');
+          split = link.info!.split( '- ');
           temp = {'number': se.seasonNumber.toString(), 'quality': split.first, 'size': (split.length > 1 ) ? split[1]: ''};
           if(!checkExist(newSeasons, temp)){
             newSeasons.add(temp);
@@ -217,6 +210,5 @@ class SerialInfoModel {
     }
     return false;
   }
-
 
 }

@@ -69,9 +69,9 @@ class FutureWidget extends StatelessWidget {
               color: Colors.grey,
               child: ListView.builder(
                   padding: const EdgeInsets.all(8),
-                  itemCount: _session.activeSessions.length,
+                  itemCount: _session.activeSessions!.length,
                   itemBuilder: (BuildContext ctx, int index) {
-                    return SessionItem(_session.activeSessions[index]);
+                    return SessionItem(_session.activeSessions![index]);
                   }),
             ),
           ],

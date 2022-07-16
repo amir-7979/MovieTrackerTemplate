@@ -1,4 +1,3 @@
-import 'package:app04/models/low_data_item.dart';
 import 'package:app04/screens/info/info_screen.dart';
 import 'package:flutter/material.dart';
 import '../../models/properties_model.dart';
@@ -15,7 +14,7 @@ class StaffCreditWidget extends StatelessWidget {
       onTap: ()=> Navigator.push(
         context,
         MaterialPageRoute(
-          builder: (context) => InfoScreen(args: {'id': _credit.movieID, 'url': _credit.moviePoster ?? ''}),
+          builder: (context) => InfoScreen(args: {'id': _credit.movieID, 'url': _credit.moviePoster ?? '', 'type': _credit.movieType}),
         ),
       ),
       child: Card(
@@ -46,9 +45,9 @@ class StaffCreditWidget extends StatelessWidget {
                 children: [
                   Text(_credit.movieName ?? '', overflow: TextOverflow.ellipsis, textAlign: TextAlign.start, style: const TextStyle(fontSize: 17),),
                   const SizedBox(height: 25),
-                  Text('Character Role : ${_credit.characterRole}', textAlign: TextAlign.left, style: const TextStyle(fontSize: 15)),
+                  if(_credit.characterRole != null && _credit.characterRole != '')Text('Character Role : ${_credit.characterRole}', textAlign: TextAlign.left, style: const TextStyle(fontSize: 15)),
                   const SizedBox(height: 10),
-                  Text('Character Name : ${_credit.characterName}', textAlign: TextAlign.left, style: const TextStyle(fontSize: 15)),
+                  if(_credit.characterName != null && _credit.characterName != '')Text('Character Name : ${_credit.characterName}', textAlign: TextAlign.left, style: const TextStyle(fontSize: 15)),
                 ],
               ),
             ),

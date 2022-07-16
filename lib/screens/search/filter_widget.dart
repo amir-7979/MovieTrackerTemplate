@@ -57,7 +57,7 @@ class _FilterWidgetState extends State<FilterWidget> {
   }
   @override
   Widget build(BuildContext context) {
-    return ListView(
+    return Column(
       children: [
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -122,16 +122,14 @@ class _FilterWidgetState extends State<FilterWidget> {
               ),
             ],),
         ),
-        SizedBox(
-          height: 300,
-          child: (widget.filterType == FilterType.film) ? filmFilter() : (widget.filterType == FilterType.staff) ? staffFilter() : characterFilter(),
-        ),
+        (widget.filterType == FilterType.film) ? filmFilter() : (widget.filterType == FilterType.staff) ? staffFilter() : characterFilter(),
+
       ],
     );
   }
 
   Widget filmFilter(){
-    return ListView(children: [
+    return Column(children: [
       Padding(
         padding: const EdgeInsets.fromLTRB(10, 5, 0, 10),
         child: Text('Type', style: Theme.of(context).textTheme.bodyMedium),

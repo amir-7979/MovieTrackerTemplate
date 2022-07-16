@@ -194,7 +194,5 @@ class MovieInfoModel {
       qualities = (json['qualities'] as List?)?.map((dynamic e) =>
           Qualities.fromJson(e as Map<String, dynamic>)).toList();
       userStats = UserStats.fromJson(json['userStats']);
-
-
   }
 }

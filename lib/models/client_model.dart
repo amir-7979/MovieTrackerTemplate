@@ -22,15 +22,11 @@ class UserClient {
     isVerified = json['isVerified'];
   }
 
-  void setAccessToken(String accessToken) => this.accessToken = accessToken;
-
   void updateUser(String accessToken, int accessTokenExpire, String refreshToken) {
     this.accessToken = accessToken;
     this.accessTokenExpire = accessTokenExpire;
     this.refreshToken = refreshToken;
   }
-
-  void setRefreshToken(String refreshToken) => this.refreshToken = refreshToken;
 
   UserClient.fromStorage(
       this.refreshToken,

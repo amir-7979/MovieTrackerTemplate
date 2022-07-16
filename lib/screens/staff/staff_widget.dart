@@ -17,7 +17,7 @@ class StaffWidget extends StatelessWidget {
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => StaffInfoScreen(args: {'id': _itemModel.sId, 'url': _itemModel.imageData != null ? _itemModel.imageData.url ?? '' : '', 'type': '${_isStaff}'}),
+              builder: (context) => StaffInfoScreen(args: {'id': _itemModel.sId, 'url': _itemModel.imageData != null ? _itemModel.imageData.url ?? '' : '', 'type': _isStaff.toString()}),
             ),
           ),
       child: Card(
@@ -46,15 +46,16 @@ class StaffWidget extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
-                  Text(_itemModel.name ?? '', overflow: TextOverflow.ellipsis,
+                  if(_itemModel.name != null) Text(_itemModel.name ?? '', overflow: TextOverflow.ellipsis,
                     textAlign: TextAlign.start,
                     style: const TextStyle(fontSize: 17),),
                   const SizedBox(height: 20),
-                  Text(
+                  /*if(_itemModel.rawName != null)Text(
                     _itemModel.rawName ?? '', overflow: TextOverflow.ellipsis,
                     textAlign: TextAlign.start,
-                    style: const TextStyle(fontSize: 14),),
-                  Text(
+                    style: const TextStyle(fontSize: 14),),*/
+                  SizedBox(height: 5),
+                  if(_itemModel.gender != null && _itemModel.gender != '')Text(
                     _itemModel.gender ?? '', overflow: TextOverflow.ellipsis,
                     textAlign: TextAlign.start,
                     style: const TextStyle(fontSize: 13),),

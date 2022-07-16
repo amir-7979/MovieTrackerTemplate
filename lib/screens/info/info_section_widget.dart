@@ -22,7 +22,6 @@ class InfoSectionWidget extends StatefulWidget {
 class _InfoSectionWidgetState extends State<InfoSectionWidget> {
   bool summery = true;
   bool isReadMore = false;
-
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -95,6 +94,8 @@ class _InfoSectionWidgetState extends State<InfoSectionWidget> {
                                 setState(() {
                                   widget._infoModel.userStats = userStats;
                                 });
+                              }else{
+                                setState((){});
                               }
                             },
                             icon: Icon(
@@ -121,6 +122,8 @@ class _InfoSectionWidgetState extends State<InfoSectionWidget> {
                                 setState(() {
                                   widget._infoModel.userStats = userStats;
                                 });
+                              }else{
+                                setState((){});
                               }
                             },
                             icon: Padding(
@@ -146,8 +149,10 @@ class _InfoSectionWidgetState extends State<InfoSectionWidget> {
                               (widget._infoModel.userStats.save)
                                   ? false
                                   : true);
-                          if (res == 200) {
+                          if (res != 200) {
                             setState(() {});
+                          }else{
+                            setState((){});
                           }
                         },
                         icon: Icon(
@@ -156,6 +161,7 @@ class _InfoSectionWidgetState extends State<InfoSectionWidget> {
                               ? Colors.blue
                               : Colors.grey,
                         )),
+/*
                     IconButton(
                       splashRadius: 0.1,
                       onPressed: () {},
@@ -164,6 +170,7 @@ class _InfoSectionWidgetState extends State<InfoSectionWidget> {
                         color: Colors.grey,
                       ),
                     ),
+*/
                     IconButton(
                       splashRadius: 0.1,
                       onPressed: () => Share.share(
@@ -203,79 +210,68 @@ class _InfoSectionWidgetState extends State<InfoSectionWidget> {
 
         SizedBox(
           height: 25,
-          child: ListView(scrollDirection: Axis.horizontal, children: [
-            Text(
-              widget._infoModel.type,
-              style: const TextStyle(fontSize: 18),
-            ),
-            if (widget._infoModel.year != null)
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 7),
-                child: Container(
-                  width: 1,
-                  height: 20,
-                  color: Colors.white,
-                ),
-              ),
-            if (widget._infoModel.year != null)
+          child: ListView(
+            scrollDirection: Axis.horizontal,
+            children: [
               Text(
-                widget._infoModel.year,
+                widget._infoModel.type,
                 style: const TextStyle(fontSize: 18),
               ),
-            if (widget._infoModel.duration != null)
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 7),
-                child: Container(
-                  width: 1,
-                  height: 20,
-                  color: Colors.white,
-                ),
-              ),
-            if (widget._infoModel.duration != null)
-              Text(
-                widget._infoModel.duration.toString(),
-                style: const TextStyle(fontSize: 18),
-              ),
-            if (widget._infoModel.rating.imdb != null)
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 7),
-                child: Container(
-                  width: 1,
-                  height: 20,
-                  color: Colors.white,
-                ),
-              ),
-            if (widget._infoModel.rating.imdb != null)
-              Row(
-                children: [
-                  SizedBox(
-                      width: 45,
-                      height: 30,
-                      child: Image.asset('assets/images/imdb.jpg')),
-                  Padding(
-                    padding: const EdgeInsets.only(left: 5),
-                    child: Text(
-                      widget._infoModel.rating.imdb.toString(),
-                      style: const TextStyle(fontSize: 18),
-                    ),
+              if (widget._infoModel.year != null)
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 7),
+                  child: Container(
+                    width: 1,
+                    height: 20,
+                    color: Colors.white,
                   ),
-                ],
-              ),
-            if (widget._infoModel.rated != null)
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 7),
-                child: Container(
-                  width: 1,
-                  height: 20,
-                  color: Colors.white,
                 ),
-              ),
-            if (widget._infoModel.rated != null)
-              Text(
-                widget._infoModel.rated,
-                style: const TextStyle(fontSize: 18),
-              ),
-          ]),
+              if (widget._infoModel.year != null)
+                Text(
+                  widget._infoModel.year,
+                  style: const TextStyle(fontSize: 18),
+                ),
+              if (widget._infoModel.duration != null)
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 7),
+                  child: Container(
+                    width: 1,
+                    height: 20,
+                    color: Colors.white,
+                  ),
+                ),
+              if (widget._infoModel.duration != null)
+                Text(
+                  widget._infoModel.duration.toString(),
+                  style: const TextStyle(fontSize: 18),
+                ),
+              if (widget._infoModel.rating.imdb != null)
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 7),
+                  child: Container(
+                    width: 1,
+                    height: 20,
+                    color: Colors.white,
+                  ),
+                ),
+              if (widget._infoModel.rating.imdb != null)
+                Row(
+                  children: [
+                    SizedBox(
+                        width: 45,
+                        height: 30,
+                        child: Image.asset('assets/images/imdb.jpg')),
+                    Padding(
+                      padding: const EdgeInsets.only(left: 5),
+                      child: Text(
+                        widget._infoModel.rating.imdb.toString(),
+                        style: const TextStyle(fontSize: 18),
+                      ),
+                    ),
+                  ],
+                ),
+            ],
+          ),
         ),
 
         const SizedBox(
@@ -292,13 +288,6 @@ class _InfoSectionWidgetState extends State<InfoSectionWidget> {
                     ? TextButton(
                         onPressed: () async {
                           _bottomSheet(context);
-                         /* showDialog(
-                              context: context,
-                              useSafeArea: false,
-                              barrierDismissible: false,
-                              builder: (BuildContext context) =>
-                                  ShowOnlineTrailerWidget(
-                                      widget._infoModel.trailers[0].url));*/
                         },
                         child: const Text('watch trailer'),
                       )
@@ -336,6 +325,9 @@ class _InfoSectionWidgetState extends State<InfoSectionWidget> {
 
         const SizedBox(height: 10),
 
+        Part("Rated", widget._infoModel.rated),
+        const SizedBox(height: 10),
+
         Part("Country", widget._infoModel.country),
         const SizedBox(height: 10),
 
@@ -361,9 +353,15 @@ class _InfoSectionWidgetState extends State<InfoSectionWidget> {
 
         Part("Quality", widget._infoModel.latestData?.quality),
 
+        const SizedBox(height: 10),
+
         Part("HardSub", widget._infoModel.latestData?.hardSub),
 
+        const SizedBox(height: 10),
+
         Part("Dubbed", widget._infoModel.latestData?.dubbed),
+
+        const SizedBox(height: 10),
 
         const Text('Download',
             style: TextStyle(color: Colors.red, fontSize: 20.0)),
@@ -372,22 +370,19 @@ class _InfoSectionWidgetState extends State<InfoSectionWidget> {
   }
 
   Widget buildText(String text) {
-    // if read more is false then show only 3 lines from text
-    // else show full text
     final lines = isReadMore ? null : 5;
     return Text(
       text,
       maxLines: lines,
-      // overflow properties is used to show 3 dot in text widget
-      // so that user can understand there are few more line to read.
       overflow: isReadMore ? TextOverflow.visible : TextOverflow.ellipsis,
+      style: TextStyle(fontSize: 15),
     );
   }
 
   void _bottomSheet(ctx) {
     showModalBottomSheet(
         isScrollControlled: true,
-        isDismissible: false,
+        isDismissible: true,
         context: ctx,
         backgroundColor: color5,
         elevation: 10,
@@ -408,17 +403,21 @@ class _InfoSectionWidgetState extends State<InfoSectionWidget> {
                           'Trailer',
                           style: TextStyle(fontSize: 20),
                         ),
-                        ElevatedButton(
-                          onPressed: () {
-                            Navigator.pop(context);
-                          },
-                          child: Icon(Icons.close),
-                          style: ElevatedButton.styleFrom(
-                              fixedSize: const Size(5, 5),
-                              shape: const CircleBorder(),
-                              elevation: 5,
-                              primary: Colors.redAccent),
-                        )
+                        Padding(
+                          padding: const EdgeInsets.fromLTRB(0, 5, 5, 5),
+                          child: InkWell(
+                              onTap: () {
+                                Navigator.pop(context);
+                              },
+                              child: Container(
+                                child: Icon(Icons.close, size: 30),
+                                decoration: BoxDecoration(
+                                  color: Colors.redAccent,
+                                  shape: BoxShape.circle,
+
+                                ),
+                              )),
+                        ),
                       ],
                     ),
                   ),
@@ -456,7 +455,7 @@ class _InfoSectionWidgetState extends State<InfoSectionWidget> {
         children: [
           Text(
             key + " : ",
-            style: const TextStyle(color: Colors.cyan, fontSize: 18),
+            style: const TextStyle(color: Colors.cyan, fontSize: 17),
           ),
           const SizedBox(
             width: 10,
@@ -465,7 +464,7 @@ class _InfoSectionWidgetState extends State<InfoSectionWidget> {
             child: Text(
               value,
               maxLines: 5,
-              style: const TextStyle(color: Colors.white, fontSize: 18),
+              style: const TextStyle(color: Colors.white, fontSize: 16),
               overflow: TextOverflow.ellipsis,
               textDirection: TextDirection.ltr,
               textAlign: TextAlign.start,
@@ -476,5 +475,4 @@ class _InfoSectionWidgetState extends State<InfoSectionWidget> {
     else
       return const SizedBox(width: 1);
   }
-
 }

@@ -17,22 +17,22 @@ class Profile {
     required this.code,
     required this.errorMessage,
   });
-  late final String id;
-  late final String username;
-  late final String publicName;
-  late final String email;
-  late final bool emailVerified;
-  late final String bio;
-  late final List<dynamic> profileImages;
-  late final String defaultProfile;
-  late final List<dynamic> friends;
-  late final Favorites favorites;
-  late final Status status;
-  late final String registrationDate;
-  late final String role;
-  late final ThisDevice thisDevice;
-  late final int code;
-  late final String errorMessage;
+  late  String id;
+  late  String username;
+  late  String publicName;
+  late  String email;
+  late  bool emailVerified;
+  late  String bio;
+  late  List<dynamic> profileImages;
+  late  String defaultProfile;
+  late  List<dynamic> friends;
+  late  Favorites favorites;
+  late  Status status;
+  late  String registrationDate;
+  late  String role;
+  late  ThisDevice thisDevice;
+  late  int code;
+  late  String errorMessage;
 
   Profile.fromJson(Map<String, dynamic> json){
     id = json['_id'];

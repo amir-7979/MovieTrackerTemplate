@@ -1,9 +1,7 @@
-import 'package:app04/screens/helper_widgets/vertical_item_widget.dart';
 import 'package:app04/screens/helper_widgets/vertical_shimmer.dart';
 import 'package:app04/screens/staff/staff_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
-import '../../models/low_data_item.dart';
 import '../../models/properties_model.dart';
 
 class StaffScrollListWidget extends StatefulWidget {

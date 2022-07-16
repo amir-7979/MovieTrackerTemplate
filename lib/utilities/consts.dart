@@ -1,7 +1,6 @@
 import 'package:app04/models/search_filter_model.dart';
 import 'package:app04/screens/download/download_screen.dart';
 import 'package:app04/screens/time_line/time_line_vertical.dart';
-import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../screens/active_session/active_sessions_screen.dart';
@@ -35,6 +34,8 @@ const redLable = Color(0xffffcb00);
 const yellow1 = Color(0xffffa600);
 const black1 = Color(0x98000000);
 const color5 = Color(0xff2d2d3d);
+const color6 = Color(0x89414141);
+
 
 SearchFilter constSearchFilter = SearchFilter('movie-serial-anime_movie-anime_serial', '1990-2022', '0-10', '0-10');
 String constSearchFilter2 = '/movie-serial-anime_movie-anime_serial/high/1990-2022/0-10/0-10/';
@@ -68,7 +69,7 @@ final routes = {
   LoginScreen.routeName: (_) => LoginScreen(),
   SignUpScreen.routeName: (_) => SignUpScreen(),
   SearchScreen.routeName: (_) => SearchScreen(),
-  ProfileScreen.routeName: (_) => const ProfileScreen(),
+  ProfileScreen.routeName: (_) =>  ProfileScreen(),
   InfoScreen.routeName: (_) => const InfoScreen(),
   GenresScreen.routeName: (_) => const GenresScreen(),
   ActiveSessionsScreen.routeName: (_) => const ActiveSessionsScreen(),

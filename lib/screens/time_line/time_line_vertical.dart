@@ -24,26 +24,26 @@ class _VerticalTimeLineState extends State<VerticalTimeLine> {
     'friday',
     'saturday'
   ];
-  int i = DateTime.now().weekday;
+  int i = DateTime.now().weekday % 7;
   bool refresh = false;
+
   Future<void> change(int j) async {
     setState(() => refresh = true);
     await Future.delayed(Duration(milliseconds: 50));
-
     setState(() {
       refresh = false;
       i = (i + j) % 7;
     });
   }
 
-  Future<List<LowDataItem>?> getMoreItem(int page) => getSecondPartItems(i, page);
+  Future<List<LowDataItem>?> getMoreItem(int page) => getTimeLinePartItems(i, page);
 
   @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
         backgroundColor: color4,
-        appBar: AppBar(title:  Text(days[i]), actions: [
+        appBar: AppBar(title: Text(days[i]), actions: [
           Padding(
             padding: const EdgeInsets.fromLTRB(5, 8, 5, 8),
             child: ElevatedButton(onPressed: () => change(-1), child: Text('prev')),
@@ -68,9 +68,7 @@ class _VerticalTimeLineState extends State<VerticalTimeLine> {
       children: [
         VerticalShimmer(), VerticalShimmer(), VerticalShimmer(), VerticalShimmer(), VerticalShimmer(), VerticalShimmer(), VerticalShimmer(),
         VerticalShimmer(), VerticalShimmer(), VerticalShimmer(), VerticalShimmer(), VerticalShimmer(), VerticalShimmer(), VerticalShimmer(),
-
       ],
     );
   }
-
 }

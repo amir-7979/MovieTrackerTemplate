@@ -10,16 +10,13 @@ class HorizontalPart extends StatelessWidget {
   final Function _function;
   late Map<String, dynamic> _map;
 
-
-
   HorizontalPart(this._name, this._argName, this._lowDataItems, this._function){
     _map = {'argName': _argName, 'function': _function};
   }
 
   @override
   Widget build(BuildContext context) {
-
-    return Column(
+    return (_lowDataItems.isNotEmpty) ? Column(
       children: [
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -34,6 +31,6 @@ class HorizontalPart extends StatelessWidget {
         ),
         showPartWidget(_lowDataItems),
       ],
-    );
+    ) : Container();
   }
 }

@@ -18,7 +18,7 @@ class TrailerModel {
   String? releaseDay;
   String? year;
   String? premiered;
-  dynamic? nextEpisode;
+  dynamic nextEpisode;
   BoxOfficeData? boxOfficeData;
   List<String>? genres;
   Rating? rating;

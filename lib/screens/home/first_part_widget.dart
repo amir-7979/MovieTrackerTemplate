@@ -9,7 +9,7 @@ class MultiplePartWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => FutureBuilder(
-        future: getFirstPartItems(),
+        future: getMultiplePartItems(),
         builder: (context, AsyncSnapshot snapshot) => (snapshot.hasData) ? multipleParts(context, snapshot.data) :  multipleHorizontalShimmerWidget(context));
 
 
